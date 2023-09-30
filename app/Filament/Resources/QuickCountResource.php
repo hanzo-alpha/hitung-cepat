@@ -88,7 +88,7 @@ class QuickCountResource extends Resource
                     ->label('Nama Calon')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('caleg.partai.nama_partai')
+                Tables\Columns\TextColumn::make('calegPartai.nama_caleg')
                     ->label('Partai')
                     ->searchable()
                     ->sortable(),
