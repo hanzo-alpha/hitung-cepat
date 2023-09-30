@@ -86,10 +86,6 @@ class QuickCountResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('caleg.nama_caleg')
                     ->label('Nama Calon')
-//                    ->formatStateUsing(function ($state, $record) {
-//                        $partai = $record->caleg->first;
-//                        dd($state, $partai);
-//                    })
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('caleg.partai.nama_partai')
