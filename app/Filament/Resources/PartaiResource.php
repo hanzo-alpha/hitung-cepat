@@ -5,8 +5,6 @@ namespace App\Filament\Resources;
 use App\Exports\PartaiExport;
 use App\Filament\Resources\PartaiResource\Pages;
 use App\Models\Partai;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -74,10 +72,10 @@ class PartaiResource extends Resource
                     ->alignCenter()
                     ->copyableState(fn (Partai $record): string => $record->warna)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('calon_count')
-                    ->label('Total Calon')
+                Tables\Columns\TextColumn::make('caleg_count')
+                    ->label('Total Caleg')
                     ->alignCenter()
-                    ->counts('calon')
+                    ->counts('caleg')
                     ->badge()
                     ->color('info'),
             ])

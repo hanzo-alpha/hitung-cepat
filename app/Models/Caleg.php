@@ -36,9 +36,4 @@ class Caleg extends Model
     {
         return $this->belongsTo(JenisCalon::class);
     }
-
-    public function quick_count(): BelongsToMany
-    {
-        return $this->belongsToMany(QuickCount::class, 'quick_count_caleg');
-    }
 }

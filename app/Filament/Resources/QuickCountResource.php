@@ -24,7 +24,7 @@ class QuickCountResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('tps_id')
+                Select::make('data_tps')
                     ->label('TPS')
                     ->relationship('data_tps', 'nama_tps')
                     ->createOptionForm([
@@ -88,8 +88,9 @@ class QuickCountResource extends Resource
                     ->label('Nama Calon')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('calegPartai.nama_caleg')
+                Tables\Columns\TextColumn::make('caleg.partai.nama_partai')
                     ->label('Partai')
+                    ->badge()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_suara')

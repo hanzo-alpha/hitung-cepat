@@ -18,7 +18,7 @@ class Tps extends Model
 
     protected $fillable = [
         'nama_tps',
-        'data_tps_id',
+        'data_tps',
         'provinsi',
         'kabupaten',
         'kecamatan',
@@ -26,6 +26,28 @@ class Tps extends Model
         'jumlah_tps',
         'keterangan',
     ];
+
+    protected $casts = [
+        'data_tps' => 'array',
+    ];
+
+    public function generateTps(self $tps, $jumlah = 0): void
+    {
+        $tpsDetails = [
+            $this->provinsi => $tps->provinsi,
+            $this->kabupaten => $tps->kabupaten,
+            $this->kecamatan => $tps->kecamatan,
+            $this->kelurahan => $tps->kelurahan,
+            $this->jumlah_tps => $tps->jumlah_tps,
+        ];
+
+        for ($i = 0; $i <= $jumlah; $i++) {
+            $tpsDetails[$this->nama_tps] = 'TPS ' . $i;
+            $tpsDetails[$this->jumlah_tps] = $tps->jumlah_tps ?? $i;
+
+            self::create($tpsDetails);
+        }
+    }
 
     public function data_tps(): HasMany
     {
