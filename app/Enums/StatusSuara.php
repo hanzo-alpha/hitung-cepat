@@ -10,15 +10,15 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusSuara: string implements HasColor, HasIcon, HasLabel
 {
-    public const SUARA_SAH = 'Suara Sah';
+    public const SUARA_SAH = 'SUARA SAH';
 
-    public const SUARA_TIDAK_SAH = 'Suara Tidak Sah';
+    public const SUARA_TIDAK_SAH = 'SUARA TIDAK SAH';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::SUARA_SAH => 'Suara Sah',
-            self::SUARA_TIDAK_SAH => 'Suara Tidak Sah',
+            self::SUARA_SAH => 'SUARA SAH',
+            self::SUARA_TIDAK_SAH => 'SUARA TIDAK SAH',
             default => '',
         };
     }

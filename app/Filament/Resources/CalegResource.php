@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class CalegResource extends Resource
 {
@@ -45,22 +46,18 @@ class CalegResource extends Resource
                         ->default(1)
                         ->relationship('jenis_calon', 'jenis_calon'),
 
-                    //                    Forms\Components\TextInput::make('jumlah_suara')
-                    //                        ->nullable()
-                    //                        ->default(0)
-                    //                        ->numeric(),
                     //                    Forms\Components\TextInput::make('status_caleg')
                     //                        ->nullable()
                     //                        ->default('Terdaftar')
                     //                        ->maxLength(255),
                     //
-                    //                    ToggleButton::make('status_aktif')
-                    //                        ->label('Apakah Caleg Aktif/Non Aktif')
-                    //                        ->offColor('danger')
-                    //                        ->onColor('primary')
-                    //                        ->offLabel('Tidak')
-                    //                        ->onLabel('Ya')
-                    //                        ->default(true),
+                    ToggleButton::make('status_aktif')
+                        ->label('Apakah Caleg Aktif/Non Aktif')
+                        ->offColor('danger')
+                        ->onColor('primary')
+                        ->offLabel('Tidak')
+                        ->onLabel('Ya')
+                        ->default(true),
                 ]),
 
             ]);

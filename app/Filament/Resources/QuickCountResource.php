@@ -4,11 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuickCountResource\Pages;
 use App\Models\QuickCount;
+use App\Utilities\Helpers;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -24,7 +27,7 @@ class QuickCountResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('data_tps')
+                Select::make('tps_id')
                     ->label('TPS')
                     ->relationship('data_tps', 'nama_tps')
                     ->createOptionForm([
@@ -62,13 +65,23 @@ class QuickCountResource extends Resource
                     ->lazy()
                     ->optionsLimit(10)
                     ->live(true),
+
                 TextInput::make('jumlah_suara')
                     ->numeric()
+                    ->live(true)
+                    ->lazy()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $persentase = Helpers::hitungPresentase($get('jumlah_suara'));
+
+                        return $set('persentase', $persentase);
+                    })
                     ->default(0),
+
                 TextInput::make('persentase')
-                    ->numeric()
-                    ->default(0.00),
-                Toggle::make('status_suara'),
+                    ->default(0),
+
+                Select::make('status_suara')
+                    ->options(config('custom.status.suara')),
             ]);
     }
 
@@ -103,12 +116,23 @@ class QuickCountResource extends Resource
                     ->alignCenter()
                     ->toggleable()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('status_suara')
+                Tables\Columns\TextColumn::make('status_suara')
                     ->label('Status')
+                    ->badge()
+                    ->icon(fn (string $state): string => match ($state) {
+                        'SUARA SAH' => 'heroicon-o-check-circle',
+                        'SUARA TIDAK SAH' => 'heroicon-minus-circle',
+                        'SUARA SEMENTARA' => 'heroicon-o-pause-circle',
+                    })
+                    ->iconPosition(IconPosition::After)
+                    ->color(fn (string $state): string => match ($state) {
+                        'SUARA SAH' => 'success',
+                        'SUARA TIDAK SAH' => 'danger',
+                        'SUARA SEMENTARA' => 'warning',
+                    })
                     ->alignCenter()
                     ->toggleable()
-                    ->sortable()
-                    ->boolean(),
+                    ->sortable(),
             ])
             ->filters([
                 //

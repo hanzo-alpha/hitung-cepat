@@ -31,7 +31,7 @@ class HitungSuara extends Model
         'jumlah_suara_tidak_sah' => 'int',
         'total_suara' => 'int',
         'persentase' => 'float',
-        'status_suara' => 'int',
+        'status_suara' => 'array',
     ];
 
     public function tps(): BelongsTo

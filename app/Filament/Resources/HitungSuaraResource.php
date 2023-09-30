@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusSuara;
 use App\Filament\Resources\HitungSuaraResource\Pages;
 use App\Models\HitungSuara;
 use App\Models\KandidatCalon;
@@ -10,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class HitungSuaraResource extends Resource
 {
@@ -61,7 +63,17 @@ class HitungSuaraResource extends Resource
                 Forms\Components\TextInput::make('persentase')
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\Toggle::make('status_suara'),
+
+                Forms\Components\Select::make('status_suara')
+                    ->options(StatusSuara::class),
+
+                ToggleButton::make('status_suara')
+                    ->label('Apakah Suara Aktif/Non Aktif')
+                    ->offColor('danger')
+                    ->onColor('primary')
+                    ->offLabel('Tidak')
+                    ->onLabel('Ya')
+                    ->default(true),
             ]);
     }
 
