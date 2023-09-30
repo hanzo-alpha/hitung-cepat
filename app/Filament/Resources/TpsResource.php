@@ -110,11 +110,9 @@ class TpsResource extends Resource
                                         'lng' => (float) $village['longitude'],
                                     ]);
                                 }
-
                             }),
                     ]),
                 ]),
-
             ]);
     }
 
