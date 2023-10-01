@@ -9,6 +9,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class HitungSuaraPartaiResource extends Resource
 {
@@ -68,6 +71,7 @@ class HitungSuaraPartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('partai.alias')
                     ->label('Nama Partai')
@@ -108,11 +112,24 @@ class HitungSuaraPartaiResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make()
+                            ->askForFilename()
+                            ->withFilename(fn ($filename) => date('YmdHis') . '-' . $filename)
+                            ->withColumns([
+                                Column::make('id')->heading('NO.'),
+                                Column::make('partai.nama_partai')->heading('NAMA PARTAI'),
+                                Column::make('jenisPemilihan.nama_institusi')->heading('INSTITUSI'),
+                                Column::make('jumlah_suara_partai')->heading('JUMLAH SUARA PARTAI'),
+                                Column::make('jumlah_dapil')->heading('JUMLAH DAPIL'),
+                                Column::make('jumlah_kursi')->heading('JUMLAH KURSI'),
+                            ]),
+                    ]),
                 ]),
             ]);
     }

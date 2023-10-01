@@ -12,6 +12,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Columns\Column;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class PenggunaResource extends Resource
 {
@@ -79,6 +82,17 @@ class PenggunaResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    ExportBulkAction::make()->exports([
+                        ExcelExport::make()
+                            ->askForFilename()
+                            ->withFilename(fn ($filename) => date('YmdHis') . '-' . $filename)
+                            ->withColumns([
+                                Column::make('id')->heading('NO.'),
+                                Column::make('name')->heading('NAMA'),
+                                Column::make('email')->heading('EMAIL'),
+                            ]),
+                    ]),
+
                 ]),
             ]);
     }

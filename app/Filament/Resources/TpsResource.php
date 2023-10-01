@@ -119,6 +119,7 @@ class TpsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->defaultSort('nama_tps', 'asc')
             ->defaultGroup('kec.name')
             ->groups([

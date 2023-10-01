@@ -18,6 +18,8 @@ class JenisCalonResource extends Resource
 
     protected static ?string $navigationGroup = 'Master';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function form(Form $form): Form
     {
         return $form

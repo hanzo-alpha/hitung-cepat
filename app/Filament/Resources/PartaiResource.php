@@ -48,6 +48,7 @@ class PartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 //                CuratorColumn::make('logo')->toggleable(),
                 Tables\Columns\TextColumn::make('no_urut')

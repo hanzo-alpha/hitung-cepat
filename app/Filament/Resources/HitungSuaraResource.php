@@ -82,6 +82,7 @@ class HitungSuaraResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('tps_id')
                     ->numeric()
