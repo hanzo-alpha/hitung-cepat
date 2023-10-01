@@ -85,6 +85,7 @@ class JenisPemilihanResource extends Resource
 
                 TextColumn::make('jumlah_kursi')
                     ->label('Jumlah Kursi')
+                    ->numeric()
                     ->sortable()
                     ->searchable()
                     ->alignCenter()

@@ -48,6 +48,8 @@ class QuickCountResource extends Resource
                     ->searchable()
                     ->preload()
                     ->lazy()
+                    ->unique()
+                    ->required()
                     ->optionsLimit(15)
                     ->live(true),
                 Select::make('caleg_id')
@@ -59,11 +61,14 @@ class QuickCountResource extends Resource
                         return '<strong>' . $record->nama_caleg . '</strong> - ' . $partai->nama_partai;
                     })->allowHtml()
                     ->createOptionForm([
-                        TextInput::make('nama_caleg')->label('Nama Caleg'),
+                        TextInput::make('nama_caleg')
+                            ->label('Nama Caleg')
+                            ->required(),
                         Select::make('partai_id')
                             ->label('Partai')
                             ->required()
                             ->lazy()
+                            ->unique()
                             ->preload()
                             ->default(25)
                             ->searchable()
@@ -78,6 +83,7 @@ class QuickCountResource extends Resource
                     ->preload()
                     ->searchable()
                     ->lazy()
+                    ->required()
                     ->optionsLimit(10)
                     ->live(true),
 

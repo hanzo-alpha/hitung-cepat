@@ -51,12 +51,12 @@ class PartaiResource extends Resource
             ->striped()
             ->columns([
                 //                CuratorColumn::make('logo')->toggleable(),
-                Tables\Columns\TextColumn::make('no_urut')
-                    ->label('No. Urut')
-                    ->toggleable()
-                    ->alignCenter()
-                    ->searchable()
-                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('no_urut')
+                //                    ->label('No. Urut')
+                //                    ->toggleable()
+                //                    ->alignCenter()
+                //                    ->searchable()
+                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama_partai')
                     ->label('Nama Partai')
                     ->searchable()

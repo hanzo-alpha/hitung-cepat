@@ -57,7 +57,7 @@ class Helpers
         return $i;
     }
 
-    public static function hitungPerolehanKursiPartai($suara, $kursiDapil = 0)
+    public static function hitungPerolehanKursiPartai($suara, $kursiDapil = 0): void
     {
         $kursiDapil = 5;
     }

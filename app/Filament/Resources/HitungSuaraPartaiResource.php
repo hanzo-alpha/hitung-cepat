@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
@@ -37,6 +38,7 @@ class HitungSuaraPartaiResource extends Resource
                     ->preload()
                     ->optionsLimit(15)
                     ->searchable()
+                    ->unique()
                     ->required(),
                 Forms\Components\Select::make('jenis_pemilihan_id')
                     ->label('Jenis Pemilihan')
