@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da058e936421ecedcacab7c2b852c08d",
+    "content-hash": "2a15ba45ad37ff2a2d4fbfd8adf232a6",
     "packages": [
         {
             "name": "andrewdwallo/filament-selectify",
@@ -284,6 +284,66 @@
                 }
             ],
             "time": "2023-09-18T14:58:25+00:00"
+        },
+        {
+            "name": "aymanalhattami/filament-slim-scrollbar",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aymanalhattami/filament-slim-scrollbar.git",
+                "reference": "0d7b004bc1c5775cd03fa1119579a24aeab6e9c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aymanalhattami/filament-slim-scrollbar/zipball/0d7b004bc1c5775cd03fa1119579a24aeab6e9c5",
+                "reference": "0d7b004bc1c5775cd03fa1119579a24aeab6e9c5",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "spatie/laravel-package-tools": "^1.15"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Aymanalhattami\\FilamentSlimScrollbar\\FilamentSlimScrollbarServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentSlimScrollbar": "Aymanalhattami\\FilamentSlimScrollbar\\FilamentSlimScrollbarFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Aymanalhattami\\FilamentSlimScrollbar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ayman Alhattami",
+                    "email": "ayman.m.alhattami@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Slim scrollbar for sidebar scrollbar, table scrollbar, and any other scrollbar in the application.",
+            "homepage": "https://github.com/aymanalhattami/filament-slim-scrollbar",
+            "keywords": [
+                "aymanalhattami",
+                "css slim scrollbar",
+                "filament",
+                "filament-slim-scrollbar",
+                "pure css scrollbar"
+            ],
+            "support": {
+                "issues": "https://github.com/aymanalhattami/filament-slim-scrollbar/issues",
+                "source": "https://github.com/aymanalhattami/filament-slim-scrollbar/tree/2.0.0"
+            },
+            "time": "2023-08-08T09:31:59+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -6105,6 +6165,79 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "ralphjsmit/laravel-filament-components",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ralphjsmit/laravel-filament-components.git",
+                "reference": "cee5683e456f274a65838a99d2c9ab207d6aaf82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ralphjsmit/laravel-filament-components/zipball/cee5683e456f274a65838a99d2c9ab207d6aaf82",
+                "reference": "cee5683e456f274a65838a99d2c9ab207d6aaf82",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "illuminate/contracts": "^8.73|^9.0|^10.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "nesbot/carbon": "^2.66",
+                "nunomaduro/collision": "^5.10|^6.0|^7.0",
+                "orchestra/testbench": "^6.22|^7.0|^8.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpunit/phpunit": "^9.5|^10.0",
+                "spatie/laravel-ray": "^1.26",
+                "spatie/pest-plugin-test-time": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "RalphJSmit\\Filament\\Components\\FilamentComponentsServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentComponents": "RalphJSmit\\Filament\\Components\\Facades\\FilamentComponents"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "RalphJSmit\\Filament\\Components\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ralph J. Smit",
+                    "email": "rjs@ralphjsmit.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A collection of reusable components for Filament.",
+            "homepage": "https://github.com/ralphjsmit/laravel-filament-components",
+            "keywords": [
+                "laravel",
+                "laravel-filament-components",
+                "ralphjsmit"
+            ],
+            "support": {
+                "issues": "https://github.com/ralphjsmit/laravel-filament-components/issues",
+                "source": "https://github.com/ralphjsmit/laravel-filament-components/tree/2.0.0"
+            },
+            "time": "2023-09-12T18:38:02+00:00"
         },
         {
             "name": "ramsey/collection",

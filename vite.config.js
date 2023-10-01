@@ -1,6 +1,6 @@
 import fs from "fs";
 import {defineConfig} from "vite";
-import laravel from "laravel-vite-plugin";
+import laravel, {refreshPaths} from "laravel-vite-plugin";
 import {homedir} from "os";
 import {resolve} from "path";
 
@@ -13,7 +13,10 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/css/filament/admin/theme.css'
             ],
-            refresh: true,
+            refresh: [
+                ...refreshPaths,
+                'app/Livewire/**',
+            ],
         }),
     ],
     server: detectServerConfig(host),

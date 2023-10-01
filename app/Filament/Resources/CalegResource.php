@@ -52,11 +52,12 @@ class CalegResource extends Resource
                         ->default(1)
                         ->relationship('jenis_calon', 'jenis_calon'),
 
-                    //                    Forms\Components\TextInput::make('status_caleg')
-                    //                        ->nullable()
-                    //                        ->default('Terdaftar')
-                    //                        ->maxLength(255),
-                    //
+                    Select::make('status_caleg')
+                        ->label('Status Caleg')
+                        ->nullable()
+                        ->default(1)
+                        ->options(config('custom.status.caleg')),
+
                     ToggleButton::make('status_aktif')
                         ->label('Apakah Caleg Aktif/Non Aktif')
                         ->offColor('danger')
@@ -90,18 +91,18 @@ class CalegResource extends Resource
                     ->color('warning')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jumlah_suara')
-                    ->alignCenter()
-                    ->toggleable()
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status_caleg')
-                    ->label('Status Caleg')
-                    ->alignCenter()
-                    ->badge()
-                    ->toggleable()
-                    ->color('success')
-                    ->searchable(),
+                //                Tables\Columns\TextColumn::make('jumlah_suara')
+                //                    ->alignCenter()
+                //                    ->toggleable()
+                //                    ->numeric()
+                //                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('status_caleg')
+                //                    ->label('Status Caleg')
+                //                    ->alignCenter()
+                //                    ->badge()
+                //                    ->toggleable()
+                //                    ->color('success')
+                //                    ->searchable(),
                 Tables\Columns\IconColumn::make('status_aktif')
                     ->label('Status')
                     ->alignCenter()

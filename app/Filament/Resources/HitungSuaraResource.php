@@ -45,7 +45,7 @@ class HitungSuaraResource extends Resource
                         Forms\Components\TextInput::make('nama_kandidat_1')->label('Nama Kandidat Calon'),
                         Forms\Components\TextInput::make('nama_kandidat_2')->label('Nama Kandidat Calon Wakil'),
                     ])
-                    ->getOptionLabelFromRecordUsing(fn (
+                    ->getOptionLabelFromRecordUsing(fn(
                         KandidatCalon $record
                     ) => (string) ($record->nama_kandidat_1) . '/' . (string) ($record->nama_kandidat_2))
                     ->preload()
@@ -120,7 +120,7 @@ class HitungSuaraResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
