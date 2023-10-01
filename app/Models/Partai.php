@@ -33,4 +33,9 @@ class Partai extends Model
     {
         return $this->belongsToMany(Caleg::class, 'partai_caleg');
     }
+
+    public function quick_count()
+    {
+        return $this->belongsTo(QuickCount::class);
+    }
 }

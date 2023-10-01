@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use Faker\Provider\Color;
+
 class Helpers
 {
-    public static function hitungPresentase(int $nilai, $format = false): float | string
+    public static function hitungPresentase(int $nilai, $format = false): float|string
     {
         $persen = (float) 0.01;
         $persentase = (float) 0.0;
@@ -23,7 +25,12 @@ class Helpers
         return $persentase;
     }
 
-    public static function hitungPerolehanKursi($suara): float | int | string
+    public static function generateColor($item): string
+    {
+        return Color::hexColor($item);
+    }
+
+    public static function hitungPerolehanKursi($suara): float|int|string
     {
         $persen = config('custom.angka_default.ambang_batas');
         $totalSuara = 0;
@@ -34,7 +41,14 @@ class Helpers
         return $totalSuara;
     }
 
-    public static function hitungBpp($suara = 0, $totalkursi = 0): float | int | string
+    /*
+     * Ada 3 tahapan yang akan dilalui dalam penentuan perolehan kursi parpol.
+     * Tahapan pertama adalah 100 persen BPP (Bilangan Pembagi Pemilih),
+     * tahap kedua adalah 50 persen BPP,
+     * tahap ketiga adalah BPP baru dengan cara suara dan kursi sisa ditarik ke provinsi.
+    */
+
+    public static function hitungBpp($suara = 0, $totalkursi = 0): float|int|string
     {
         $totalSuara = 0;
         $kursi = 0;
@@ -44,6 +58,20 @@ class Helpers
         $kursi = ($suara - $totalSuara) / $totalSuara;
 
         return $kursi ?? 0;
+    }
+
+    /**
+     * Perhitungan Nilai parliamentary threshold (PT)
+     * Dilakukan terlebih dahulu untuk menghitung perolehan suara/kursi partai
+     * Berdasarkan suara sah nasional. Partai yang tidak lolos tahap ini
+     * Tidak diperbolehkan dalam perhitungan kursi partai.
+     */
+    public static function hitungParliamentaryThreshold($suarasah): float|int|string
+    {
+        $persenPT = config('custom.angka_default.parliamentary_threshold');
+        $nilaiPT = ($suarasah / $persenPT) ?? 0;
+
+        return $nilaiPT;
     }
 
     public static function bilanganPembagi($nilai): int
@@ -62,7 +90,7 @@ class Helpers
         $kursiDapil = 5;
     }
 
-    public static function number_format_short($n, $precision = 1): string | float | int
+    public static function number_format_short($n, $precision = 1): string|float|int
     {
         if ($n < 900) {
             // 0 - 900

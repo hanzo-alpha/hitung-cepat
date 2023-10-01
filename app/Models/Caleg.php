@@ -25,6 +25,7 @@ class Caleg extends Model
     protected $casts = [
         'status_aktif' => 'boolean',
         'jumlah_suara' => 'integer',
+        'status_caleg' => 'integer',
     ];
 
     public function partai(): BelongsToMany
