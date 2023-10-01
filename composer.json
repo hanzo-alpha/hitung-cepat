@@ -23,6 +23,7 @@
         "leandrocfe/filament-apex-charts": "^3.0",
         "pxlrbt/filament-excel": "^2.1",
         "pxlrbt/filament-spotlight": "^1.0",
+        "shipu/web-installer": "^1.0",
         "z3d0x/filament-logger": "^0.6.1"
     },
     "require-dev": {

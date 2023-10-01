@@ -36,17 +36,22 @@ class TpsResource extends Resource
                     Forms\Components\Section::make()->schema([
                         TableRepeater::make('data_tps')
                             ->relationship('data_tps')
+                            ->required()
+                            ->minItems(1)
                             ->label('Nama TPS')
                             ->schema([
-                                Forms\Components\TextInput::make('nama_tps'),
-                            ])->withoutHeader()->hideLabels(),
+                                Forms\Components\TextInput::make('nama_tps')->required(),
+                            ])
+                            ->withoutHeader()
+                            ->hideLabels(),
                     ])->columnSpanFull(),
                 ]),
 
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make()->schema([
                         Select::make('provinsi')
-                            ->nullable()
+                            ->required()
+                            ->unique()
                             ->options(
                                 Province::all()
                                     ->pluck('name', 'code')
@@ -55,7 +60,8 @@ class TpsResource extends Resource
                             ->reactive()
                             ->searchable(),
                         Select::make('kabupaten')
-                            ->nullable()
+                            ->required()
+                            ->unique()
                             ->options(function (callable $get) {
                                 $prov = City::query()->where('province_code', $get('provinsi'));
                                 if (! $prov) {
@@ -70,7 +76,8 @@ class TpsResource extends Resource
                             ->searchable(),
 
                         Select::make('kecamatan')
-                            ->nullable()
+                            ->required()
+                            ->unique()
                             ->searchable()
                             ->reactive()
                             ->options(function (callable $get) {
@@ -86,7 +93,8 @@ class TpsResource extends Resource
                             ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
-                            ->nullable()
+                            ->required()
+                            ->unique()
                             ->options(function (callable $get) {
                                 $kel = Village::query()->where('district_code', $get('kecamatan'));
                                 if (! $kel) {
@@ -174,7 +182,7 @@ class TpsResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -38,7 +38,6 @@ class QuickCountResource extends Resource
                     ->createOptionForm([
                         TextInput::make('nama_tps')
                             ->label('Nama TPS'),
-                        TextInput::make('jumlah_suara')->default(0)->nullable()->numeric(),
                     ])
                     ->getOptionLabelFromRecordUsing(function ($record) {
                         return '<strong>' . $record->nama_tps . '</strong><br>' .
@@ -114,20 +113,12 @@ class QuickCountResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('tps.nama_tps')
                     ->label('TPS')
-                    ->description(fn ($record): string => $record->tps->kel->name)
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tps.prov.name')
-                    ->label('Provinsi')
+                    ->description(fn ($record): string => $record->tps->kec->name . ' | ' . $record->tps->kel->name)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('caleg.nama_caleg')
                     ->label('Nama Calon')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('caleg.partai.nama_partai')
-                    ->label('Partai')
-                    ->badge()
+                    ->description(fn ($record): string => $record->caleg->first()->partai->first()->nama_partai)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_suara')

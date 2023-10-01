@@ -21,6 +21,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
+use Shipu\WebInstaller\Middleware\RedirectIfNotInstalled;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -81,6 +82,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RedirectIfNotInstalled::class,
             ])
             ->resources([
                 config('filament-logger.activity_resource'),
