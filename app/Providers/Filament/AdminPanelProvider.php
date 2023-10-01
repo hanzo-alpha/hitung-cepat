@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use Awcodes\Curator\CuratorPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -49,13 +48,13 @@ class AdminPanelProvider extends PanelProvider
                     ),
                 SpotlightPlugin::make(),
                 FilamentShieldPlugin::make(),
-                CuratorPlugin::make()
-                    ->label('Media')
-                    ->pluralLabel('Media')
-                    ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Master')
-                    ->navigationSort(3)
-                    ->navigationCountBadge(),
+                //                CuratorPlugin::make()
+                //                    ->label('Media')
+                //                    ->pluralLabel('Media')
+                //                    ->navigationIcon('heroicon-o-photo')
+                //                    ->navigationGroup('Master')
+                //                    ->navigationSort(3)
+                //                    ->navigationCountBadge(),
             ])
             ->colors([
                 'primary' => Color::Blue,

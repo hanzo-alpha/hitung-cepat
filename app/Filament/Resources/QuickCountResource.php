@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuickCountResource\Pages;
+use App\Models\Partai;
 use App\Models\QuickCount;
 use App\Utilities\Helpers;
 use Filament\Forms\Components\Select;
@@ -19,9 +20,13 @@ class QuickCountResource extends Resource
 {
     protected static ?string $model = QuickCount::class;
 
-    protected static ?string $slug = 'quick-count';
+    protected static ?string $slug = 'suara-calon';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $label = 'Suara Calon';
+
+    protected static ?string $pluralLabel = 'Suara Calon';
+
+    protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
     public static function form(Form $form): Form
     {
@@ -35,14 +40,24 @@ class QuickCountResource extends Resource
                             ->label('Nama TPS'),
                         TextInput::make('jumlah_suara')->default(0)->nullable()->numeric(),
                     ])
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        return '<strong>' . $record->nama_tps . '</strong><br>' .
+                            $record->tps->kec->name . ' | ' .
+                            $record->tps->kel->name;
+                    })->allowHtml()
                     ->searchable()
                     ->preload()
                     ->lazy()
-                    ->optionsLimit(10)
+                    ->optionsLimit(15)
                     ->live(true),
                 Select::make('caleg_id')
                     ->label('Caleg')
                     ->relationship('caleg', 'nama_caleg')
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        $partai = Partai::find($record->partai_id);
+
+                        return '<strong>' . $record->nama_caleg . '</strong> - ' . $partai->nama_partai;
+                    })->allowHtml()
                     ->createOptionForm([
                         TextInput::make('nama_caleg')->label('Nama Caleg'),
                         Select::make('partai_id')
@@ -52,7 +67,7 @@ class QuickCountResource extends Resource
                             ->preload()
                             ->default(25)
                             ->searchable()
-                            ->optionsLimit(10)
+                            ->optionsLimit(15)
                             ->relationship('partai', 'nama_partai')
                             ->columnSpanFull(),
                         Select::make('jenis_calon_id')
@@ -78,6 +93,7 @@ class QuickCountResource extends Resource
                     ->default(0),
 
                 TextInput::make('persentase')
+                    ->disabled()
                     ->default(0),
 
                 Select::make('status_suara')
@@ -91,6 +107,7 @@ class QuickCountResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('tps.nama_tps')
                     ->label('TPS')
+                    ->description(fn ($record): string => $record->tps->kel->name)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tps.prov.name')

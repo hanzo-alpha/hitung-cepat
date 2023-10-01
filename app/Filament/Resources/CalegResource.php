@@ -21,6 +21,12 @@ class CalegResource extends Resource
 
     protected static ?string $slug = 'caleg';
 
+    protected static ?string $label = 'Calon Kandidat';
+
+    protected static ?string $pluralLabel = 'Calon Kandidat';
+
+    protected static ?string $navigationGroup = 'Master';
+
     public static function form(Form $form): Form
     {
         return $form

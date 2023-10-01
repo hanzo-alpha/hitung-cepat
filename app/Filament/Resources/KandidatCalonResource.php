@@ -31,6 +31,8 @@ class KandidatCalonResource extends Resource
 
     protected static ?string $navigationLabel = 'Kandidat Calon';
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function form(Form $form): Form
