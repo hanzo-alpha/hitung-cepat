@@ -32,6 +32,11 @@ class Caleg extends Model
         return $this->belongsToMany(Partai::class, 'partai_caleg');
     }
 
+    public function partais(): BelongsTo
+    {
+        return $this->belongsTo(Partai::class);
+    }
+
     public function jenis_calon(): BelongsTo
     {
         return $this->belongsTo(JenisCalon::class);

@@ -72,8 +72,8 @@ class QuickCount extends Model
         return $this->belongsToMany(Caleg::class, 'quick_count_caleg');
     }
 
-    public function calegPartai(): HasManyThrough
+    public function calegPartai()
     {
-        return $this->hasManyThrough(Caleg::class, Partai::class);
+        return $this->caleg;
     }
 }
