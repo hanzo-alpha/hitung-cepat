@@ -24,6 +24,8 @@ class PartaiChart extends ApexChartWidget
 
     protected static ?string $loadingIndicator = 'Sedang memuat...';
 
+    protected static ?int $sort = 2;
+
     public ?string $filter = 'today';
 
     protected int | string | array $columnSpan = 'full';
