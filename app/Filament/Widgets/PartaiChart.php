@@ -73,7 +73,7 @@ class PartaiChart extends ApexChartWidget
             ->with('partai')->get();
         $partai = $hitung->map(function ($item, $key) {
             $dta = [];
-            $dta['nama_partai'] = $item->partai->nama_partai;
+            $dta['nama_partai'] = $item->partai->alias;
             $dta['suara'] = $item->jumlah_suara_partai;
             $dta['warna'] = $item->partai->warna;
 
@@ -106,11 +106,11 @@ class PartaiChart extends ApexChartWidget
                     ],
                 ],
             ],
-            'colors' => \Arr::map($partai->toArray(), static fn ($item) => $item['warna']),
+            'colors' => ['#ffd77d', \Arr::map($partai->toArray(), static fn ($item) => $item['warna'])],
             'plotOptions' => [
                 'bar' => [
                     'borderRadius' => 3,
-                    'horizontal' => false,
+                    'horizontal' => true,
                 ],
             ],
         ];

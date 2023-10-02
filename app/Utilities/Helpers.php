@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Utilities;
 
+use App\Models\HitungSuaraPartai;
 use Faker\Provider\Color;
 
 class Helpers
 {
-    public static function hitungPresentase(int $nilai, $format = false): float|string
+    public static function hitungPresentase(int $nilai, $format = false): float | string
     {
-        $persen = (float) 0.01;
         $persentase = (float) 0.0;
         $totalDpt = config('custom.angka_default.total_dpt');
 
@@ -30,7 +30,7 @@ class Helpers
         return Color::hexColor($item);
     }
 
-    public static function hitungPerolehanKursi($suara): float|int|string
+    public static function hitungPerolehanKursi($suara): float | int | string
     {
         $persen = config('custom.angka_default.ambang_batas');
         $totalSuara = 0;
@@ -48,7 +48,7 @@ class Helpers
      * tahap ketiga adalah BPP baru dengan cara suara dan kursi sisa ditarik ke provinsi.
     */
 
-    public static function hitungBpp($suara = 0, $totalkursi = 0): float|int|string
+    public static function hitungBpp($suara = 0, $totalkursi = 0): float | int | string
     {
         $totalSuara = 0;
         $kursi = 0;
@@ -66,7 +66,7 @@ class Helpers
      * Berdasarkan suara sah nasional. Partai yang tidak lolos tahap ini
      * Tidak diperbolehkan dalam perhitungan kursi partai.
      */
-    public static function hitungParliamentaryThreshold($suarasah): float|int|string
+    public static function hitungParliamentaryThreshold($suarasah): float | int | string
     {
         $persenPT = config('custom.angka_default.parliamentary_threshold');
         $nilaiPT = ($suarasah / $persenPT) ?? 0;
@@ -74,23 +74,47 @@ class Helpers
         return $nilaiPT;
     }
 
-    public static function bilanganPembagi($nilai): int
+    public static function hitungPerolehanKursiPartai($suara, $kursiDapil = 0): void
     {
+        $kursiDapil = max($kursiDapil, 0);
+        $kursiTetap = 0;
+
+        $hitungSuaraPartai = HitungSuaraPartai::query()->with('partai')
+            ->get()
+            ->filter()
+            ->map(function ($item) use ($kursiDapil) {
+                $alokasiKursi = 1;
+                $kursiDapil = 5;
+                $arr['nama_partai'] = $item->partai->nama_partai;
+                $arr['suara_partai'] = 36000;
+                $arr['jumlah_dapil'] = $kursiDapil ?? $item->jumlah_dapil;
+                $arr['jumlah_kursi'] = 5;
+                $bilangan = static::bilanganPembagi($kursiDapil);
+                $suarass = ($arr['suara_partai'] / $bilangan[0]);
+                $suarass = $suarass >= $arr['suara_partai'] ? $alokasiKursi : $suarass;
+                $kursiTetap = 0;
+                $arr['kursi_tetap'] = $kursiTetap;
+                dd($arr, $alokasiKursi);
+            });
+    }
+
+    /*
+     * Menggunakan metode sainte lague
+     * */
+
+    public static function bilanganPembagi($nilai): \Illuminate\Support\Collection | array
+    {
+        $ganjil = collect();
         for ($i = 1; $i <= $nilai; $i++) {
-            if ($i % 2 === 0) {
-                return $i;
+            if ($i % 2 !== 0) {
+                $ganjil->add($i);
             }
         }
 
-        return $i;
+        return $ganjil;
     }
 
-    public static function hitungPerolehanKursiPartai($suara, $kursiDapil = 0): void
-    {
-        $kursiDapil = 5;
-    }
-
-    public static function number_format_short($n, $precision = 1): string|float|int
+    public static function number_format_short($n, $precision = 1): string | float | int
     {
         if ($n < 900) {
             // 0 - 900

@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Validation\Rule;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
@@ -101,15 +100,25 @@ class HitungSuaraPartaiResource extends Resource
                     ->alignCenter()
                     ->numeric()
                     ->sortable(),
-                //                Tables\Columns\IconColumn::make('status_hitung')
-                //                ->alignCenter()
+                //                Tables\Columns\TextColumn::make('status_hitung')
+                //                    ->alignCenter()
                 //                    ->searchable()
-                //                    ->sortable()
-                //                    ->boolean(),
+                //                    ->formatStateUsing(function ($record) {
+                //                        dd(Helpers::hitungPerolehanKursiPartai($record->jumlah_suara_partai, $record->jumlah_dapil));
+                //                    })
+                //                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('partai')
+                    ->searchable()
+                    ->relationship('partai', 'nama_partai')
+                    ->preload()
+                    ->multiple()
+                    ->optionsLimit(15),
             ])
+            ->persistFiltersInSession()
+            ->filtersFormWidth('xs')
+            ->filtersTriggerAction(fn (Tables\Actions\Action $action) => $action->button()->label('Filter'))
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),

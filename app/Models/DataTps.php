@@ -10,6 +10,7 @@ class DataTps extends Model
     protected $table = 'data_tps';
 
     protected $fillable = [
+        'tps_id',
         'nama_tps',
         'jumlah_suara',
     ];

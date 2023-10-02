@@ -129,6 +129,7 @@ class QuickCountResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('persentase')
                     ->alignCenter()
+                    ->formatStateUsing(fn ($state) => $state * 100 . '%')
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_suara')
@@ -150,7 +151,11 @@ class QuickCountResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('caleg_id')
+                    ->relationship('caleg', 'nama_caleg')
+                    ->searchable()
+                    ->optionsLimit(15)
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
