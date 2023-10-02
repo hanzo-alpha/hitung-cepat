@@ -18,6 +18,8 @@ class QuickCount extends Model
 {
     use HasFactory;
 
+    protected $table = 'quick_count';
+
     protected $fillable = [
         'tps_id',
         'caleg_id',

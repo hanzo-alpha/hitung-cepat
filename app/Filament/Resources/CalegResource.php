@@ -47,16 +47,10 @@ class CalegResource extends Resource
                         ->label('Nama Caleg')
                         ->required(),
 
-                    Select::make('jenis_calon_id')
+                    Select::make('jenis')
                         ->required()
                         ->default(1)
-                        ->relationship('jenis_calon', 'jenis_calon'),
-
-                    Select::make('status_caleg')
-                        ->label('Status Caleg')
-                        ->nullable()
-                        ->default(1)
-                        ->options(config('custom.status.caleg')),
+                        ->relationship('jenisPemilihan', 'nama_institusi'),
 
                     ToggleButton::make('status_aktif')
                         ->label('Apakah Caleg Aktif/Non Aktif')
@@ -84,7 +78,7 @@ class CalegResource extends Resource
                     ->color('info')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('jenis_calon.jenis_calon')
+                Tables\Columns\TextColumn::make('jenisPemilihan.nama_institusi')
                     ->label('Pemilihan')
                     ->toggleable()
                     ->badge()
@@ -96,13 +90,6 @@ class CalegResource extends Resource
                 //                    ->toggleable()
                 //                    ->numeric()
                 //                    ->sortable(),
-                //                Tables\Columns\TextColumn::make('status_caleg')
-                //                    ->label('Status Caleg')
-                //                    ->alignCenter()
-                //                    ->badge()
-                //                    ->toggleable()
-                //                    ->color('success')
-                //                    ->searchable(),
                 Tables\Columns\IconColumn::make('status_aktif')
                     ->label('Status')
                     ->alignCenter()

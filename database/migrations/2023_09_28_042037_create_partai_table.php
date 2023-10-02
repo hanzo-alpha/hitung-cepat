@@ -10,10 +10,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('partai', function (Blueprint $table) {
+        Schema::create('partai', static function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('no_urut');
+            $table->unsignedTinyInteger('no_urut')->nullable();
             $table->string('nama_partai');
+            $table->string('alias')->nullable();
+            $table->string('warna')->nullable();
+            $table->string('logo')->nullable();
         });
     }
 

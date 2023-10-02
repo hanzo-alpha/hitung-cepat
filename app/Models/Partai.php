@@ -24,11 +24,6 @@ class Partai extends Model
         'logo',
     ];
 
-    public function calon(): BelongsToMany
-    {
-        return $this->belongsToMany(KandidatCalon::class, 'partai_calon');
-    }
-
     public function caleg(): BelongsToMany
     {
         return $this->belongsToMany(Caleg::class, 'partai_caleg');

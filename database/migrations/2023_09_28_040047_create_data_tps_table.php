@@ -12,9 +12,8 @@ return new class extends Migration
     {
         Schema::create('data_tps', static function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('tps_id')->nullable();
             $table->string('nama_tps');
-            $table->unsignedTinyInteger('jumlah_suara')->nullable()->default(0);
-            $table->json('data_tps')->nullable();
             $table->timestamps();
         });
     }

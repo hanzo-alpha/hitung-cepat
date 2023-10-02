@@ -13,19 +13,19 @@ class Caleg extends Model
 {
     use HasFactory;
 
+    protected $table = 'caleg';
+
     protected $fillable = [
         'nama_caleg',
         'partai_id',
-        'jenis_calon_id',
-        'status_caleg',
-        'status_aktif',
+        'jenis_pemilihan_id',
         'jumlah_suara',
+        'status_aktif',
     ];
 
     protected $casts = [
         'status_aktif' => 'boolean',
         'jumlah_suara' => 'integer',
-        'status_caleg' => 'integer',
     ];
 
     public function partai(): BelongsToMany
@@ -33,13 +33,8 @@ class Caleg extends Model
         return $this->belongsToMany(Partai::class, 'partai_caleg');
     }
 
-    public function partais(): BelongsTo
+    public function jenisPemilihan(): BelongsTo
     {
-        return $this->belongsTo(Partai::class);
-    }
-
-    public function jenis_calon(): BelongsTo
-    {
-        return $this->belongsTo(JenisCalon::class);
+        return $this->belongsTo(JenisPemilihan::class);
     }
 }

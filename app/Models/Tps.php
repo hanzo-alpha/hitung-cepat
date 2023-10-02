@@ -18,7 +18,7 @@ class Tps extends Model
 
     protected $fillable = [
         'nama_tps',
-        'data_tps',
+        'data_tps_id',
         'provinsi',
         'kabupaten',
         'kecamatan',
@@ -28,7 +28,7 @@ class Tps extends Model
     ];
 
     protected $casts = [
-        'data_tps' => 'array',
+        'jumlah_tps' => 'integer',
     ];
 
     public function generateTps(self $tps, $jumlah = 0): void
@@ -53,6 +53,11 @@ class Tps extends Model
     {
         return $this->hasMany(DataTps::class);
     }
+
+    //    public function dataTps(): BelongsToMany
+    //    {
+    //        return $this->belongsToMany($related);
+    //    }
 
     public function prov(): BelongsTo
     {

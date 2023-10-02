@@ -19,6 +19,10 @@ return new class extends Migration
             $table->unsignedInteger('jumlah_suara_partai')->nullable()->default(0);
             $table->unsignedInteger('jumlah_dapil')->nullable()->default(0);
             $table->unsignedInteger('jumlah_kursi')->nullable()->default(0);
+            $table->unsignedInteger('total_suara')->nullable()->default(0);
+            $table->unsignedInteger('total_kursi')->nullable()->default(0);
+            $table->unsignedInteger('total_dapil')->nullable()->default(0);
+            $table->unsignedInteger('persentase_suara')->nullable()->default(0);
             $table->unsignedTinyInteger('status_hitung')->nullable()->default(0);
             $table->timestamps(); //
         });

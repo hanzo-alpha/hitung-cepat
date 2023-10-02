@@ -59,13 +59,6 @@ class HitungSuaraPartaiResource extends Resource
                     ->label('Jumlah Kursi')
                     ->integer()
                     ->default(0),
-                //                ToggleButton::make('status_hitung')
-                //                    ->label('Status Aktif Perhitungan')
-                //                    ->offColor('danger')
-                //                    ->onColor('primary')
-                //                    ->offLabel('Tidak')
-                //                    ->onLabel('Ya')
-                //                    ->default(true),
             ]);
     }
 
@@ -100,13 +93,6 @@ class HitungSuaraPartaiResource extends Resource
                     ->alignCenter()
                     ->numeric()
                     ->sortable(),
-                //                Tables\Columns\TextColumn::make('status_hitung')
-                //                    ->alignCenter()
-                //                    ->searchable()
-                //                    ->formatStateUsing(function ($record) {
-                //                        dd(Helpers::hitungPerolehanKursiPartai($record->jumlah_suara_partai, $record->jumlah_dapil));
-                //                    })
-                //                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('partai')
