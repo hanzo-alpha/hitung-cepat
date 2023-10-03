@@ -39,10 +39,10 @@ class QuickCount extends Model
         return $this->belongsTo(Tps::class);
     }
 
-    public function tpsdata(): HasManyThrough
-    {
-        return $this->hasManyThrough(DataTps::class, Tps::class);
-    }
+    //    public function data_tps(): HasMany
+    //    {
+    //        return $this->hasMany(TpsDataTps::class);
+    //    }
 
     public function data_tps(): BelongsTo
     {

@@ -13,6 +13,13 @@ return [
         'ambang_batas' => 3.5,
         'parliamentary_threshold' => 2.5,
     ],
+    'date' => [
+        'display_short' => 'D, d M Y',
+        'display_short_fulltime' => 'D, d M Y H:i:s',
+        'display_long' => 'l, d F Y',
+        'display_long_fulltime' => 'l, d F Y H:i:s',
+        'db_format' => 'Y-m-d H:i:s',
+    ],
     'status' => [
         'suara' => [
             'SUARA SAH' => 'SUARA SAH',

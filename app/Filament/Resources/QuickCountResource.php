@@ -5,12 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuickCountResource\Pages;
 use App\Models\Partai;
 use App\Models\QuickCount;
-use App\Utilities\Helpers;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
@@ -35,10 +32,6 @@ class QuickCountResource extends Resource
                 Select::make('tps_id')
                     ->label('TPS')
                     ->relationship('data_tps', 'nama_tps')
-                    ->createOptionForm([
-                        TextInput::make('nama_tps')
-                            ->label('Nama TPS'),
-                    ])
                     ->getOptionLabelFromRecordUsing(function ($record) {
                         return '<strong>' . $record->nama_tps . '</strong><br>' .
                             $record->tps->kec->name . ' | ' .
@@ -50,6 +43,7 @@ class QuickCountResource extends Resource
                     ->unique()
                     ->required()
                     ->optionsLimit(15)
+                    ->autofocus()
                     ->live(true),
                 Select::make('caleg_id')
                     ->label('Caleg')
@@ -62,6 +56,7 @@ class QuickCountResource extends Resource
                     ->createOptionForm([
                         TextInput::make('nama_caleg')
                             ->label('Nama Caleg')
+                            ->autofocus()
                             ->required(),
                         Select::make('partai_id')
                             ->label('Partai')
@@ -74,36 +69,37 @@ class QuickCountResource extends Resource
                             ->optionsLimit(15)
                             ->relationship('partai', 'nama_partai')
                             ->columnSpanFull(),
-                        Select::make('jenis_calon_id')
+                        Select::make('jenis_pemilihan_id')
                             ->required()
                             ->default(1)
-                            ->relationship('jenis_calon', 'jenis_calon'),
+                            ->relationship('jenisPemilihan', 'nama_institusi'),
                     ])
                     ->preload()
                     ->searchable()
                     ->lazy()
                     ->required()
-                    ->optionsLimit(10)
-                    ->live(true),
+                    ->optionsLimit(15)
+                    ->live(),
 
                 TextInput::make('jumlah_suara')
                     ->numeric()
                     ->live(true)
                     ->lazy()
-                    ->afterStateUpdated(function (Get $get, Set $set) {
-                        $persentase = Helpers::hitungPresentase($get('jumlah_suara'));
-
-                        return $set('persentase', $persentase);
-                    })
+//                    ->afterStateUpdated(function (Get $get, Set $set) {
+//                        $persentase = Helpers::hitungPresentase($get('jumlah_suara'));
+//
+//                        return $set('persentase', $persentase);
+//                    })
                     ->default(0),
 
-                TextInput::make('persentase')
-                    ->disabled()
-                    ->default(0),
+                //                TextInput::make('persentase')
+                //                    ->disabled()
+                //                    ->default(0),
 
                 Select::make('status_suara')
+                    ->default('SUARA SEMENTARA')
                     ->options(config('custom.status.suara')),
-            ]);
+            ])->columns(1)->inlineLabel();
     }
 
     public static function table(Table $table): Table
@@ -113,12 +109,12 @@ class QuickCountResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('tps.nama_tps')
                     ->label('TPS')
-                    ->description(fn ($record): string => $record->tps->kec->name . ' | ' . $record->tps->kel->name)
+                    ->description(fn($record): string => $record->tps->kec->name . ' | ' . $record->tps->kel->name)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('caleg.nama_caleg')
                     ->label('Nama Calon')
-                    ->description(fn ($record): string => $record->caleg->first()->partai->first()->nama_partai)
+                    ->description(fn($record): string => $record->caleg->first()->partai->first()->nama_partai)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_suara')
@@ -129,19 +125,19 @@ class QuickCountResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('persentase')
                     ->alignCenter()
-                    ->formatStateUsing(fn ($state) => $state * 100 . '%')
+                    ->formatStateUsing(fn($state) => $state * 100 . '%')
                     ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status_suara')
                     ->label('Status')
                     ->badge()
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'SUARA SAH' => 'heroicon-o-check-circle',
                         'SUARA TIDAK SAH' => 'heroicon-minus-circle',
                         'SUARA SEMENTARA' => 'heroicon-o-pause-circle',
                     })
                     ->iconPosition(IconPosition::After)
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'SUARA SAH' => 'success',
                         'SUARA TIDAK SAH' => 'danger',
                         'SUARA SEMENTARA' => 'warning',

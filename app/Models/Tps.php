@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use KodePandai\Indonesia\Models\City;
 use KodePandai\Indonesia\Models\District;
@@ -54,10 +55,10 @@ class Tps extends Model
         return $this->hasMany(DataTps::class);
     }
 
-    //    public function dataTps(): BelongsToMany
-    //    {
-    //        return $this->belongsToMany($related);
-    //    }
+    public function dataTps(): BelongsToMany
+    {
+        return $this->belongsToMany(DataTps::class, 'tps_data_tps');
+    }
 
     public function prov(): BelongsTo
     {

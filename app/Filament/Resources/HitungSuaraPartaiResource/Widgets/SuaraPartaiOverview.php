@@ -27,7 +27,7 @@ class SuaraPartaiOverview extends BaseWidget
                 ->color('primary')
                 ->description('Total Partai'),
 
-            Stat::make('SUARA', Helpers::number_format_short($hitungSuaraPartai->suara))
+            Stat::make('SUARA', Helpers::number_format_short($hitungSuaraPartai->suara ?? 0))
                 ->color('success')
                 ->description('Total Suara Partai'),
 

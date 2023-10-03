@@ -21,9 +21,9 @@ class CalegResource extends Resource
 
     protected static ?string $slug = 'caleg';
 
-    protected static ?string $label = 'Calon Kandidat';
+    protected static ?string $label = 'Calon Legislatif';
 
-    protected static ?string $pluralLabel = 'Calon Kandidat';
+    protected static ?string $pluralLabel = 'Calon Legislatif';
 
     protected static ?string $navigationGroup = 'Master';
 
@@ -47,13 +47,13 @@ class CalegResource extends Resource
                         ->label('Nama Caleg')
                         ->required(),
 
-                    Select::make('jenis')
+                    Select::make('jenis_pemilihan_id')
                         ->required()
                         ->default(1)
                         ->relationship('jenisPemilihan', 'nama_institusi'),
 
                     ToggleButton::make('status_aktif')
-                        ->label('Apakah Caleg Aktif/Non Aktif')
+                        ->label('Status Aktif / Non Aktif')
                         ->offColor('danger')
                         ->onColor('primary')
                         ->offLabel('Tidak')
