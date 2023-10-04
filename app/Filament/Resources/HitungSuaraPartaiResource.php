@@ -27,8 +27,6 @@ class HitungSuaraPartaiResource extends Resource
 
     protected static ?string $pluralLabel = 'Suara Partai';
 
-    //    protected static ?string $navigationGroup = 'Master';
-
     public static function form(Form $form): Form
     {
         return $form

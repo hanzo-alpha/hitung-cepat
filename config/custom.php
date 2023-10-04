@@ -36,4 +36,11 @@ return [
             3 => 'NON PARTAI',
         ],
     ],
+    'version' => [
+        'git' => [
+            'remote' => [
+                'repository' => env('VERSION_GIT_REMOTE_REPOSITORY'),
+            ],
+        ],
+    ],
 ];

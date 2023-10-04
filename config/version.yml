@@ -28,7 +28,7 @@ git:
     remote: 'git ls-remote {$repository}'
   branch: refs/heads/master
   ### you can use config() to get it here: {{ config('version.git.remote.repository') }}.Do not use env()
-  repository: "{{ config('version.git.remote.repository') }}"
+  repository: "{{ config('custom.version.git.remote.repository') }}"
   version:
     local: 'git describe'
     remote: 'git ls-remote {$repository} | grep tags/ | grep -v {} | cut -d / -f 3 | sort --version-sort | tail -1'
