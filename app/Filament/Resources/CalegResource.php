@@ -32,6 +32,12 @@ class CalegResource extends Resource
         return $form
             ->schema([
                 Grid::make()->schema([
+                    TextInput::make('nama_caleg')
+                        ->label('Nama Caleg')
+                        ->autofocus()
+                        ->columnSpanFull()
+                        ->required(),
+
                     Select::make('partai_id')
                         ->label('Partai')
                         ->required()
@@ -40,12 +46,7 @@ class CalegResource extends Resource
                         ->default(25)
                         ->searchable()
                         ->optionsLimit(10)
-                        ->relationship('partai', 'nama_partai')
-                        ->columnSpanFull(),
-
-                    TextInput::make('nama_caleg')
-                        ->label('Nama Caleg')
-                        ->required(),
+                        ->relationship('partai', 'nama_partai'),
 
                     Select::make('jenis_pemilihan_id')
                         ->required()
@@ -53,11 +54,11 @@ class CalegResource extends Resource
                         ->relationship('jenisPemilihan', 'nama_institusi'),
 
                     ToggleButton::make('status_aktif')
-                        ->label('Status Aktif / Non Aktif')
+                        ->label('Status Aktif Calon')
                         ->offColor('danger')
-                        ->onColor('primary')
-                        ->offLabel('Tidak')
-                        ->onLabel('Ya')
+                        ->onColor('success')
+                        ->offLabel('Non Aktif')
+                        ->onLabel('Aktif')
                         ->default(true),
                 ]),
             ]);

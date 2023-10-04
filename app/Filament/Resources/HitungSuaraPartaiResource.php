@@ -78,11 +78,19 @@ class HitungSuaraPartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('10s')
+            ->emptyStateDescription('Setelah Anda mengisi form pertama Anda, hasilnya akan muncul di sini')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Tambah Suara Partai')
+                    ->icon('heroicon-o-plus')
+                    ->button(),
+            ])
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('partai.alias')
                     ->label('Nama Partai')
-                    ->description(fn ($record): string => $record->partai->nama_partai)
+                    ->description(fn($record): string => $record->partai->nama_partai)
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenisPemilihan.nama_institusi')
@@ -117,7 +125,7 @@ class HitungSuaraPartaiResource extends Resource
             ])
             ->persistFiltersInSession()
             ->filtersFormWidth('xs')
-            ->filtersTriggerAction(fn (Tables\Actions\Action $action) => $action->button()->label('Filter'))
+            ->filtersTriggerAction(fn(Tables\Actions\Action $action) => $action->button()->label('Filter'))
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
@@ -130,7 +138,7 @@ class HitungSuaraPartaiResource extends Resource
                     ExportBulkAction::make()->exports([
                         ExcelExport::make()
                             ->askForFilename()
-                            ->withFilename(fn ($filename) => date('YmdHis') . '-' . $filename)
+                            ->withFilename(fn($filename) => date('YmdHis') . '-' . $filename)
                             ->withColumns([
                                 Column::make('id')->heading('NO.'),
                                 Column::make('partai.nama_partai')->heading('NAMA PARTAI'),

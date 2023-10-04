@@ -13,7 +13,9 @@ class ManagePartais extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus')
+                ->successNotificationTitle('Partai berhasil ditambahkan'),
         ];
     }
 }

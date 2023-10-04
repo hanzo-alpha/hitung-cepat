@@ -9,7 +9,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class SuaraPartaiOverview extends BaseWidget
 {
-    protected static ?string $pollingInterval = null;
+    protected static ?string $pollingInterval = '10s';
 
     protected $listeners = ['updateSuaraPartaiOverview' => '$refresh'];
 

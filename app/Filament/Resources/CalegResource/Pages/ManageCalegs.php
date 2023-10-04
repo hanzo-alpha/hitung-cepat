@@ -13,7 +13,9 @@ class ManageCalegs extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->successNotificationTitle('Caleg berhasil disimpan'),
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus')
+                ->successNotificationTitle('Caleg berhasil disimpan'),
         ];
     }
 }

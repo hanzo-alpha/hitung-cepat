@@ -43,7 +43,6 @@ class QuickCountResource extends Resource
                     ->unique()
                     ->required()
                     ->optionsLimit(15)
-                    ->autofocus()
                     ->live(true),
                 Select::make('caleg_id')
                     ->label('Caleg')
@@ -79,12 +78,12 @@ class QuickCountResource extends Resource
                     ->lazy()
                     ->required()
                     ->optionsLimit(15)
-                    ->live(),
+                    ->live(true),
 
                 TextInput::make('jumlah_suara')
                     ->numeric()
-                    ->live(true)
-                    ->lazy()
+//                    ->live(true)
+//                    ->lazy()
 //                    ->afterStateUpdated(function (Get $get, Set $set) {
 //                        $persentase = Helpers::hitungPresentase($get('jumlah_suara'));
 //
@@ -105,6 +104,14 @@ class QuickCountResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('10s')
+            ->emptyStateDescription('Setelah Anda mengisi form pertama Anda, hasilnya akan muncul di sini')
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make()
+                    ->label('Buat Suara Calon')
+                    ->icon('heroicon-o-plus')
+                    ->button(),
+            ])
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('tps.nama_tps')
@@ -148,11 +155,15 @@ class QuickCountResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('caleg_id')
+                    ->label('Berdasarkan calon')
                     ->relationship('caleg', 'nama_caleg')
                     ->searchable()
                     ->optionsLimit(15)
                     ->preload(),
-            ])
+                Tables\Filters\SelectFilter::make('status_suara')
+                    ->label('Berdasarkan status suara')
+                    ->options(config('custom.status.suara')),
+            ], Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),

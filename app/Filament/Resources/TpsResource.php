@@ -59,7 +59,7 @@ class TpsResource extends Resource
                                 Province::all()
                                     ->pluck('name', 'code')
                             )
-                            ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null))
+                            ->afterStateUpdated(fn (callable $set) => $set('kabupaten', null))
                             ->live()
                             ->default(config('custom.default.kodeprov'))
                             ->searchable(),
@@ -67,14 +67,14 @@ class TpsResource extends Resource
                             ->required()
                             ->options(function (callable $get) {
                                 $prov = City::query()->where('province_code', $get('provinsi'));
-                                if (!$prov) {
+                                if (! $prov) {
                                     return City::where('province_code', config('custom.default.kodeprov'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $prov->pluck('name', 'code');
                             })
-                            ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null))
+                            ->afterStateUpdated(fn (callable $set) => $set('kecamatan', null))
                             ->live()
                             ->default(config('custom.default.kodekab'))
                             ->searchable(),
@@ -85,7 +85,7 @@ class TpsResource extends Resource
                             ->live()
                             ->options(function (callable $get) {
                                 $kab = District::query()->where('city_code', $get('kabupaten'));
-                                if (!$kab) {
+                                if (! $kab) {
                                     return District::where('city_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
@@ -93,13 +93,13 @@ class TpsResource extends Resource
                                 return $kab->pluck('name', 'code');
                             })
 //                            ->hidden(fn (callable $get) => ! $get('kabupaten'))
-                            ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                            ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
                             ->required()
                             ->options(function (callable $get) {
                                 $kel = Village::query()->where('district_code', $get('kecamatan'));
-                                if (!$kel) {
+                                if (! $kel) {
                                     return Village::where('district_code', '731211')
                                         ->pluck('name', 'code');
                                 }

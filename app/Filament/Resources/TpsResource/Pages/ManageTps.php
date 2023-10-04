@@ -41,7 +41,7 @@ class ManageTps extends ManageRecords
                 })
                 ->after(function () {
                     Notification::make()
-                        ->title('TPS Berhasil dibuat')
+                        ->title('TPS Berhasil ditambahkan')
                         ->sendToDatabase(auth()->user());
                 }),
             //            Actions\CreateAction::make('generate')
