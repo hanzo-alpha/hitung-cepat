@@ -30,8 +30,8 @@ class QuickCount extends Model
 
     protected $casts = [
         'persentase' => 'float',
-        'jumlah_suara' => 'int',
-        'status_suara' => 'string',
+        'jumlah_suara' => 'integer',
+        'status_suara' => 'integer',
     ];
 
     public function tps(): BelongsTo

@@ -9,7 +9,7 @@ use Faker\Provider\Color;
 
 class Helpers
 {
-    public static function hitungPresentase(int $nilai, $format = false): float | string
+    public static function hitungPresentase(int $nilai, $format = false): float|string
     {
         $persentase = (float) 0.0;
         $totalDpt = config('custom.angka_default.total_dpt');
@@ -30,7 +30,7 @@ class Helpers
         return Color::hexColor($item);
     }
 
-    public static function hitungPerolehanKursi($suara): float | int | string
+    public static function hitungPerolehanKursi($suara): float|int|string
     {
         $persen = config('custom.angka_default.ambang_batas');
         $totalSuara = 0;
@@ -48,7 +48,7 @@ class Helpers
      * tahap ketiga adalah BPP baru dengan cara suara dan kursi sisa ditarik ke provinsi.
     */
 
-    public static function hitungBpp($suara = 0, $totalkursi = 0): float | int | string
+    public static function hitungBpp($suara = 0, $totalkursi = 0): float|int|string
     {
         $totalSuara = 0;
         $kursi = 0;
@@ -66,7 +66,7 @@ class Helpers
      * Berdasarkan suara sah nasional. Partai yang tidak lolos tahap ini
      * Tidak diperbolehkan dalam perhitungan kursi partai.
      */
-    public static function hitungParliamentaryThreshold($suarasah): float | int | string
+    public static function hitungParliamentaryThreshold($suarasah): float|int|string
     {
         $persenPT = config('custom.angka_default.parliamentary_threshold');
         $nilaiPT = ($suarasah / $persenPT) ?? 0;
@@ -102,7 +102,7 @@ class Helpers
      * Menggunakan metode sainte lague
      * */
 
-    public static function bilanganPembagi($nilai): \Illuminate\Support\Collection | array
+    public static function bilanganPembagi($nilai): \Illuminate\Support\Collection|array
     {
         $ganjil = collect();
         for ($i = 1; $i <= $nilai; $i++) {
@@ -114,7 +114,31 @@ class Helpers
         return $ganjil;
     }
 
-    public static function number_format_short($n, $precision = 1): string | float | int
+    public static function getStatusSuaraName($value): string
+    {
+        return match ($value) {
+            1 => 'SUARA SAH',
+            2 => 'SUARA TIDAK SAH',
+            3 => 'SUARA SEMENTARA'
+        };
+    }
+
+    public static function getNamaJenisKelamin($value, $short = false): string
+    {
+        if ($short) {
+            return match ($value) {
+                1 => 'L',
+                2 => 'P',
+            };
+        }
+
+        return match ($value) {
+            1 => 'Laki-Laki',
+            2 => 'Perempuan',
+        };
+    }
+
+    public static function number_format_short($n, $precision = 1): string|float|int
     {
         if ($n < 900) {
             // 0 - 900

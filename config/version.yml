@@ -7,15 +7,15 @@ current:
   patch: 0
   prerelease:
   buildmetadata:
-  commit: 100001
+  commit: 20231004
   timestamp:
     mode: absorb
-    year:
-    month:
-    day:
-    hour:
-    minute:
-    second:
+    year: 2023
+    month: 04
+    day: 10
+    hour: 23
+    minute: 12
+    second: 30
     timezone:
 commit:
   mode: absorb
@@ -33,7 +33,7 @@ git:
   version:
     local: 'git describe'
     remote: 'git ls-remote {$repository} | grep tags/ | grep -v {} | cut -d / -f 3 | sort --version-sort | tail -1'
-    matcher: '/[V|v]*[ersion]*\\s*\\.*(\\d+)\\.(\\d+)\\.(\\d+)\\.*(\\w*)/'
+    matcher: '/(?P<label>[v|V]*[er]*[sion]*)[\.|\s]*(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/'
   timestamp:
     local: 'git show -s --format=%ci'
     remote: 'git show -s --format=%ci origin/master' ## we will have to find a better way

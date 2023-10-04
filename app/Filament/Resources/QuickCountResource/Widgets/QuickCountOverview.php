@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\QuickCountResource\Widgets;
 
 use App\Models\QuickCount;
-use App\Utilities\Helpers;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -22,7 +21,7 @@ class QuickCountOverview extends BaseWidget
                 ->color('primary')
                 ->description('Total Calon Legislatif'),
 
-            Stat::make('SUARA', Helpers::number_format_short($quickCount->sum('jumlah_suara') ?? 0))
+            Stat::make('SUARA', $quickCount->sum('jumlah_suara'))
                 ->color('success')
                 ->description('Total Suara Calon'),
 

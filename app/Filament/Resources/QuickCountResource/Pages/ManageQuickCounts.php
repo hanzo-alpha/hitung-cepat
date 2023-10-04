@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\QuickCountResource\Pages;
 
 use App\Filament\Resources\QuickCountResource;
+use App\Utilities\Helpers;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -47,6 +48,11 @@ class ManageQuickCounts extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->mutateFormDataUsing(function (array $data) {
+                    $data['persentase'] = Helpers::hitungPresentase($data['jumlah_suara']);
+
+                    return $data;
+                })
                 ->icon('heroicon-o-plus')
                 ->successNotificationTitle('Suara Calon berhasil ditambahkan'),
         ];

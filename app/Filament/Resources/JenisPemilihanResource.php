@@ -6,10 +6,12 @@ use App\Filament\Resources\JenisPemilihanResource\Pages;
 use App\Models\JenisPemilihan;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Wallo\FilamentSelectify\Components\ToggleButton;
 
 class JenisPemilihanResource extends Resource
@@ -49,11 +51,11 @@ class JenisPemilihanResource extends Resource
                 TextInput::make('deskripsi'),
 
                 ToggleButton::make('status_pemilihan')
-                    ->label('Apakah Pemilihan Aktif/Non Aktif')
+                    ->label('Status')
                     ->offColor('danger')
                     ->onColor('primary')
-                    ->offLabel('Tidak')
-                    ->onLabel('Ya')
+                    ->offLabel('Non Aktif')
+                    ->onLabel('Aktif')
                     ->default(true),
             ]);
     }
@@ -94,14 +96,19 @@ class JenisPemilihanResource extends Resource
                 TextColumn::make('deskripsi')
                     ->limit(50)
                     ->wrap()
-                    ->toggleable(),
-                Tables\Columns\IconColumn::make('status_pemilihan')
+                    ->toggleable()
+                    ->toggledHiddenByDefault(),
+                Tables\Columns\ToggleColumn::make('status_pemilihan')
                     ->label('Status Aktif')
-                    ->alignCenter()
-                    ->boolean(),
+                    ->alignCenter(),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('status_pemilihan')
+                    ->label('Status Aktif')
+                    ->placeholder('Semua')
+                    ->trueLabel('Aktif')
+                    ->falseLabel('Non Aktif')
+                    ->boolean(),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -112,6 +119,24 @@ class JenisPemilihanResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('status_aktif')
+                        ->label('Non Aktifkan yang dipilih')
+                        ->icon('heroicon-o-shield-check')
+                        ->color('primary')
+                        ->action(function (Collection $records) {
+                            return $records->each(function ($record) {
+                                $record->status_pemilihan
+                                    ? $record->update(['status_pemilihan' => false])
+                                    : $record->update(['status_pemilihan' => true]);
+                            });
+                        })->after(function () {
+                            Notification::make()
+                                ->title('Data yang dipilih berhasil diupdate')
+                                ->success()
+                                ->send()
+                                ->sendToDatabase(auth()->user());
+                        })
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }

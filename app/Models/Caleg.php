@@ -17,6 +17,7 @@ class Caleg extends Model
 
     protected $fillable = [
         'nama_caleg',
+        'jenis_kelamin',
         'partai_id',
         'jenis_pemilihan_id',
         'jumlah_suara',
@@ -26,6 +27,7 @@ class Caleg extends Model
     protected $casts = [
         'status_aktif' => 'boolean',
         'jumlah_suara' => 'integer',
+        'jenis_kelamin' => 'integer',
     ];
 
     public function partai(): BelongsToMany

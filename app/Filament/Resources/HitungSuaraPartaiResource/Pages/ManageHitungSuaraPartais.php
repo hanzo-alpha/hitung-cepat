@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HitungSuaraPartaiResource\Pages;
 
 use App\Filament\Resources\HitungSuaraPartaiResource;
+use App\Utilities\Helpers;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -40,6 +41,11 @@ class ManageHitungSuaraPartais extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->mutateFormDataUsing(function (array $data) {
+                    $data['persentase_suara'] = Helpers::hitungPresentase($data['jumlah_suara_partai']);
+
+                    return $data;
+                })
                 ->icon('heroicon-o-plus')
                 ->successNotificationTitle('Suara Berhasil Di Tambahkan.'),
         ];

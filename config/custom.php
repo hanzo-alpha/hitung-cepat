@@ -22,9 +22,9 @@ return [
     ],
     'status' => [
         'suara' => [
-            'SUARA SAH' => 'SUARA SAH',
-            'SUARA TIDAK SAH' => 'SUARA TIDAK SAH',
-            'SUARA SEMENTARA' => 'SUARA SEMENTARA',
+            1 => 'SUARA SAH',
+            2 => 'SUARA TIDAK SAH',
+            3 => 'SUARA SEMENTARA',
         ],
         'aktif' => [
             1 => 'AKTIF',
@@ -34,6 +34,10 @@ return [
             1 => 'PARTAI',
             2 => 'TERDAFTAR',
             3 => 'NON PARTAI',
+        ],
+        'jenis_kelamin' => [
+            1 => 'Laki-Laki',
+            2 => 'Perempuan',
         ],
     ],
     'version' => [
