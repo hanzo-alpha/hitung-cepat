@@ -51,7 +51,6 @@ class HitungSuaraPartaiResource extends Resource
                                 ->searchable()
                                 ->required(),
                         ]),
-                    // ...
                 ], [
                     Section::make()
                         ->schema([
