@@ -12,6 +12,7 @@ return [
         'total_dpt' => 200000,
         'ambang_batas' => 3.5,
         'parliamentary_threshold' => 2.5,
+        'batas_pemilih_tps' => 300,
     ],
     'date' => [
         'display_short' => 'D, d M Y',
@@ -38,6 +39,10 @@ return [
         'jenis_kelamin' => [
             1 => 'Laki-Laki',
             2 => 'Perempuan',
+        ],
+        'pemilih' => [
+            1 => 'Pemilih Tetap',
+            2 => 'Pemilih Sementara',
         ],
     ],
     'version' => [

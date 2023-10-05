@@ -113,10 +113,6 @@ class CalegResource extends Resource
                 Tables\Columns\ToggleColumn::make('status_aktif')
                     ->label('Status Aktif')
                     ->alignCenter(),
-                //                Tables\Columns\IconColumn::make('status_aktif')
-                //                    ->label('Status')
-                //                    ->alignCenter()
-                //                    ->boolean(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('status_aktif')

@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DapilResource\Pages;
 use App\Models\Dapil;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use KodePandai\Indonesia\Models\Province;
 
 class DapilResource extends Resource
 {
@@ -30,63 +32,77 @@ class DapilResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('provinsi')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kabupaten')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kecamatan')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('kelurahan')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('nama_dapil')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('jumlah_dapil')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('jumlah_kursi')
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Section::make()->schema([
+                    Select::make('provinsi')
+                        ->required()
+                        ->preload()
+                        ->optionsLimit(20)
+                        ->lazy()
+                        ->options(
+                            Province::all()
+                                ->pluck('name', 'code')
+                        )
+                        ->searchable(),
+                    Forms\Components\TextInput::make('nama_dapil')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('jumlah_dapil')
+                        ->numeric()
+                        ->default(0),
+                    Forms\Components\TextInput::make('jumlah_kursi')
+                        ->numeric()
+                        ->default(0),
+                ])->inlineLabel()->columnSpanFull(),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
+            ->defaultSort('nama_dapil', 'asc')
+            ->groups([
+                Tables\Grouping\Group::make('prov.name')
+                    ->label('Provinsi')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+            ])
+//            ->groupsInDropdownOnDesktop()
+            ->deferLoading()
             ->columns([
-                Tables\Columns\TextColumn::make('provinsi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kabupaten')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kecamatan')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kelurahan')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('prov.name')
+                    ->label('Provinsi')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama_dapil')
+                    ->label('Nama Dapil')
+                    ->alignCenter()
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jumlah_dapil')
+                    ->label('Jumlah Dapil')
+                    ->alignCenter()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_kursi')
+                    ->label('Jumlah Kursi')
+                    ->alignCenter()
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('provinsi')
+                    ->preload()
+                    ->optionsLimit(20)
+                    ->searchable()
+                    ->relationship('prov', 'name'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

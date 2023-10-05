@@ -8,33 +8,32 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum StatusSuara: string implements HasColor, HasIcon, HasLabel
+enum StatusDaftarPemilih: string implements HasColor, HasIcon, HasLabel
 {
-    case SUARA_SAH = 'SUARA SAH';
-
-    case SUARA_TIDAK_SAH = 'SUARA TIDAK SAH';
+    case Tetap = 'Pemilih Tetap';
+    case Sementara = 'Pemilih Sementara';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::SUARA_SAH => 'SUARA SAH',
-            self::SUARA_TIDAK_SAH => 'SUARA TIDAK SAH'
+            self::Tetap => 'Pemilih Tetap',
+            self::Sementara => 'Pemilih Sementara',
         };
     }
 
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::SUARA_SAH => 'success',
-            self::SUARA_TIDAK_SAH => 'danger'
+            self::Tetap => 'primary',
+            self::Sementara => 'danger',
         };
     }
 
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::SUARA_SAH => 'heroicon-m-check-badge',
-            self::SUARA_TIDAK_SAH => 'heroicon-m-eye-slash'
+            self::Tetap => 'heroicon-m-pencil',
+            self::Sementara => 'heroicon-m-eye',
         };
     }
 }
