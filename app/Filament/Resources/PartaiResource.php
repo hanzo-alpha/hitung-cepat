@@ -49,6 +49,7 @@ class PartaiResource extends Resource
     {
         return $table
             ->striped()
+            ->defaultSort('no_urut', 'ASC')
             ->columns([
                 //                CuratorColumn::make('logo')->toggleable(),
                 //                Tables\Columns\TextColumn::make('no_urut')
@@ -87,7 +88,7 @@ class PartaiResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -102,7 +103,7 @@ class PartaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePartais::route('/'),
+            'index' => Pages\ManagePartai::route('/'),
         ];
     }
 }

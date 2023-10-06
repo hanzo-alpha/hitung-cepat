@@ -8,10 +8,10 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum JenisKelamin: string implements HasColor, HasIcon, HasLabel
+enum JenisKelamin: int implements HasColor, HasIcon, HasLabel
 {
-    case LAKI = 'Laki-Laki';
-    case PEREMPUAN = 'Perempuan';
+    case LAKI = 1;
+    case PEREMPUAN = 0;
 
     public function getColor(): string | array | null
     {

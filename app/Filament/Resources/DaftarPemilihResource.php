@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\JenisKelamin;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDaftarPemilih;
 use App\Filament\Resources\DaftarPemilihResource\Pages;
@@ -14,7 +15,10 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use RalphJSmit\Filament\Components\Forms\Sidebar;
+use KodePandai\Indonesia\Models\City;
+use KodePandai\Indonesia\Models\District;
+use KodePandai\Indonesia\Models\Province;
+use KodePandai\Indonesia\Models\Village;
 
 class DaftarPemilihResource extends Resource
 {
@@ -36,52 +40,136 @@ class DaftarPemilihResource extends Resource
     {
         return $form
             ->schema([
-                Sidebar::make([
-                    Section::make()->schema([
-                        TextInput::make('nama_lengkap')
-                            ->required(),
+                Section::make()->schema([
+                    TextInput::make('nama_lengkap')
+                        ->label('Nama Lengkap')
+                        ->required(),
 
-                        TextInput::make('nik')
-                            ->required(),
+                    TextInput::make('nik')
+                        ->label('NIK Pemilih')
+                        ->required(),
 
-                        TextInput::make('no_kk')
-                            ->required(),
+                    TextInput::make('no_kk')
+                        ->label('No. Kartu Keluarga (KK)')
+                        ->required(),
 
-                        TextInput::make('notelp')
-                            ->required(),
+                    TextInput::make('notelp')
+                        ->label('No. Telepon/WA')
+                        ->required(),
 
-                        Select::make('status_daftar')
-                            ->label('Status Aktif')
-                            ->default(StatusAktif::NonAktif)
-                            ->options(StatusAktif::class),
+                    Select::make('jenis_kelamin')
+                        ->label('Jenis Kelamin')
+                        ->default(JenisKelamin::LAKI)
+                        ->options(JenisKelamin::class),
 
-                        Select::make('status_pemilih')
-                            ->label('Status Pemilih')
-                            ->default(StatusDaftarPemilih::Sementara)
-                            ->options(StatusDaftarPemilih::class),
+                    Select::make('provinsi')
+                        ->required()
+                        ->options(
+                            Province::all()
+                                ->pluck('name', 'code')
+                        )
+                        ->afterStateUpdated(fn (callable $set) => $set('kabupaten', null))
+                        ->live()
+                        ->default(config('custom.default.kodeprov'))
+                        ->searchable(),
+                    Select::make('kabupaten')
+                        ->required()
+                        ->options(function (callable $get) {
+                            $prov = City::query()->where('province_code', $get('provinsi'));
+                            if (! $prov) {
+                                return City::where('province_code', config('custom.default.kodeprov'))
+                                    ->pluck('name', 'code');
+                            }
 
-                        TextInput::make('alamat'),
-                    ]),
-                ], [
-                    Section::make()->schema([
+                            return $prov->pluck('name', 'code');
+                        })
+                        ->afterStateUpdated(fn (callable $set) => $set('kecamatan', null))
+                        ->live()
+                        ->default(config('custom.default.kodekab'))
+                        ->searchable(),
 
-                        TextInput::make('provinsi'),
+                    Select::make('kecamatan')
+                        ->required()
+                        ->searchable()
+                        ->live()
+                        ->options(function (callable $get) {
+                            $kab = District::query()->where('city_code', $get('kabupaten'));
+                            if (! $kab) {
+                                return District::where('city_code', config('custom.default.kodekab'))
+                                    ->pluck('name', 'code');
+                            }
 
-                        TextInput::make('kabupaten'),
+                            return $kab->pluck('name', 'code');
+                        })
+//                            ->hidden(fn (callable $get) => ! $get('kabupaten'))
+                        ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
-                        TextInput::make('kecamatan'),
+                    Select::make('kelurahan')
+                        ->required()
+                        ->options(function (callable $get) {
+                            $kel = Village::query()->where('district_code', $get('kecamatan'));
+                            if (! $kel) {
+                                return Village::where('district_code', '731211')
+                                    ->pluck('name', 'code');
+                            }
 
-                        TextInput::make('kelurahan'),
+                            return $kel->pluck('name', 'code');
+                        })
+                        ->live()
+                        ->searchable()
+//                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
+                        ->afterStateUpdated(function (callable $set, $state) {
+                            $village = Village::where('code', $state)->first();
+                            if ($village) {
+                                $set('latitude', $village['latitude']);
+                                $set('longitude', $village['longitude']);
+                                $set('kode_pos', $village['postal_code']);
+                                $set('location', [
+                                    'lat' => (float) $village['latitude'],
+                                    'lng' => (float) $village['longitude'],
+                                ]);
+                            }
+                        }),
 
-                        TextInput::make('kode_pos'),
-                    ]),
-                ]),
+                    TextInput::make('kode_pos')->label('Kode Pos'),
+
+                    Select::make('status_daftar')
+                        ->label('Status Aktif')
+                        ->default(StatusAktif::NonAktif)
+                        ->options(StatusAktif::class),
+
+                    Select::make('status_pemilih')
+                        ->label('Status Pemilih')
+                        ->default(StatusDaftarPemilih::Sementara)
+                        ->options(StatusDaftarPemilih::class),
+                ])->columns(2),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
+            ->defaultSort('nama_tps', 'asc')
+            ->defaultGroup('kec.name')
+            ->groups([
+                Tables\Grouping\Group::make('prov.name')
+                    ->label('Provinsi')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Tables\Grouping\Group::make('kab.name')
+                    ->label('Kabupaten')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Tables\Grouping\Group::make('kec.name')
+                    ->label('Kecamatan')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Tables\Grouping\Group::make('kel.name')
+                    ->label('Kelurahan')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+            ])
             ->columns([
                 TextColumn::make('nama_lengkap'),
 
@@ -91,25 +179,46 @@ class DaftarPemilihResource extends Resource
 
                 TextColumn::make('alamat'),
 
-                TextColumn::make('provinsi'),
+                TextColumn::make('notelp'),
 
-                TextColumn::make('kabupaten'),
+                TextColumn::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->badge(),
 
-                TextColumn::make('kecamatan'),
-
-                TextColumn::make('kelurahan'),
+                Tables\Columns\TextColumn::make('prov.name')
+                    ->label('Provinsi')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kab.name')
+                    ->label('Kabupaten')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kec.name')
+                    ->label('Kecamatan')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kel.name')
+                    ->label('Kelurahan/Desa')
+                    ->toggleable()
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('kode_pos'),
 
                 TextColumn::make('status_pemilih'),
 
-                TextColumn::make('notelp'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -128,7 +237,7 @@ class DaftarPemilihResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDaftarPemilihs::route('/'),
+            'index' => Pages\ListDaftarPemilih::route('/'),
             'create' => Pages\CreateDaftarPemilih::route('/create'),
             'edit' => Pages\EditDaftarPemilih::route('/{record}/edit'),
         ];

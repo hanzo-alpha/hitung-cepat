@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\JenisKelamin;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDaftarPemilih;
 use App\Traits\HasWilayah;
@@ -22,6 +23,7 @@ class DaftarPemilih extends Model
         'nik',
         'no_kk',
         'notelp',
+        'jenis_kelamin',
         'alamat',
         'provinsi',
         'kabupaten',
@@ -30,10 +32,13 @@ class DaftarPemilih extends Model
         'kode_pos',
         'status_pemilih',
         'status_daftar',
+        'attachment',
     ];
 
     protected $casts = [
         'status_daftar' => StatusAktif::class,
         'status_pemilih' => StatusDaftarPemilih::class,
+        'jenis_kelamin' => JenisKelamin::class,
+        'attachment' => 'string',
     ];
 }
