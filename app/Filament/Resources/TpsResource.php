@@ -4,13 +4,17 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TpsResource\Pages;
 use App\Models\Tps;
+use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use KodePandai\Indonesia\Models\City;
 use KodePandai\Indonesia\Models\District;
 use KodePandai\Indonesia\Models\Province;
@@ -37,17 +41,19 @@ class TpsResource extends Resource
                         TextInput::make('jumlah_tps')
                             ->label('Jumlah TPS')
                             ->helperText('Jumlah TPS yang akan digenerate otomatis. Ex: TPS 1, TPS 2, dst, sesuai jumlah yang dimasukkan')
+                            ->hiddenOn('edit')
                             ->required(),
-                        //                        TableRepeater::make('data_tps')
-                        //                            ->relationship('data_tps')
-                        //                            ->required()
-                        //                            ->minItems(1)
-                        //                            ->label('Nama TPS')
-                        //                            ->schema([
-                        //                                Forms\Components\TextInput::make('nama_tps')->required(),
-                        //                            ])
-                        //                            ->withoutHeader()
-                        //                            ->hideLabels(),
+                        TableRepeater::make('data_tps')
+                            ->relationship('data_tps')
+                            ->required()
+                            ->hiddenOn('create')
+                            ->minItems(1)
+                            ->label('Nama TPS')
+                            ->schema([
+                                Forms\Components\TextInput::make('nama_tps')->required(),
+                            ])
+                            ->withoutHeader()
+                            ->hideLabels(),
                     ])->columnSpanFull(),
                 ]),
 
@@ -183,12 +189,32 @@ class TpsResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->action(function ($record) {
+                            $record->data_tps()->delete();
+                            $record->delete();
+
+                            Notification::make()
+                                ->title('Data TPS berhasil dihapus')
+                                ->sendToDatabase(auth()->user());
+                        })
+                        ->successNotificationTitle('Data TPS berhasil dihapus'),
                 ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function (Collection $records) {
+                            $records->each(fn (Model $record) => $record->data_tps()->delete());
+                            $records->each(fn (Model $record) => $record->delete());
+
+                            Notification::make()
+                                ->title($records->count() . ' Data TPS berhasil dihapus')
+                                ->sendToDatabase(auth()->user());
+                        })
+                        ->successNotificationTitle('Data yang dipilih berhasil dihapus')
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\DetachBulkAction::make(),
                 ]),
             ]);
     }

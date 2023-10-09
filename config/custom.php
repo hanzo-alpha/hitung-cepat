@@ -8,6 +8,7 @@ return [
         'kodekab' => '7312',
         'kodepos' => '90861',
     ],
+    'nama_tps' => 'TPS',
     'angka_default' => [
         'total_dpt' => 200000,
         'ambang_batas' => 3.5,

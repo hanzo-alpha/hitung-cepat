@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use KodePandai\Indonesia\IndonesiaDatabaseSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +19,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call(IndonesiaDatabaseSeeder::class);
+        $this->call(WilayahSeeder::class);
+        $this->call(PartaiTableSeeder::class);
+        $this->call(JenisPemilihanTableSeeder::class);
+        $this->call(ImportDaftarPemilihTableSeeder::class);
     }
 }
