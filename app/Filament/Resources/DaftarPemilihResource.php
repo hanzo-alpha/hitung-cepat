@@ -68,7 +68,7 @@ class DaftarPemilihResource extends Resource
                         ->options(
                             Provinsi::all()->pluck('name', 'code')
                         )
-                        ->afterStateUpdated(fn(callable $set) => $set('kabupaten', null))
+                        ->afterStateUpdated(fn (callable $set) => $set('kabupaten', null))
                         ->lazy()
                         ->live()
                         ->default(config('custom.default.kodeprov'))
@@ -77,14 +77,14 @@ class DaftarPemilihResource extends Resource
                         ->required()
                         ->options(function (callable $get) {
                             $prov = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
-                            if (!$prov) {
+                            if (! $prov) {
                                 return City::where('provinsi_code', config('custom.default.kodeprov'))
                                     ->pluck('name', 'code');
                             }
 
                             return $prov->pluck('name', 'code');
                         })
-                        ->afterStateUpdated(fn(callable $set) => $set('kecamatan', null))
+                        ->afterStateUpdated(fn (callable $set) => $set('kecamatan', null))
                         ->live()
                         ->lazy()
                         ->default(config('custom.default.kodekab'))
@@ -97,20 +97,20 @@ class DaftarPemilihResource extends Resource
                         ->lazy()
                         ->options(function (callable $get) {
                             $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
-                            if (!$kab) {
+                            if (! $kab) {
                                 return Kabupaten::where('kabupaten_code', config('custom.default.kodekab'))
                                     ->pluck('name', 'code');
                             }
 
                             return $kab->pluck('name', 'code');
                         })
-                        ->afterStateUpdated(fn(callable $set) => $set('kelurahan', null)),
+                        ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                     Select::make('kelurahan')
                         ->required()
                         ->options(function (callable $get) {
                             $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
-                            if (!$kel) {
+                            if (! $kel) {
                                 return Kelurahan::where('kecamatan_code', '731211')
                                     ->pluck('name', 'code');
                             }

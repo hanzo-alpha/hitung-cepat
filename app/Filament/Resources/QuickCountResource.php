@@ -116,13 +116,13 @@ class QuickCountResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('caleg.nama_caleg')
                     ->label('Nama Calon')
-                    ->description(fn($record): string => $record->caleg->first()->partai->first()->nama_partai)
+                    ->description(fn ($record): string => $record->caleg->first()->partai->first()->nama_partai)
                     ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('tps.nama_tps')
                     ->label('TPS')
-                    ->description(fn($record): string => $record->tps->kec->name . ' | ' . $record->tps->kel->name)
+                    ->description(fn ($record): string => $record->tps->kec->name . ' | ' . $record->tps->kel->name)
                     ->searchable()
                     ->sortable(),
 
@@ -135,7 +135,7 @@ class QuickCountResource extends Resource
 
                 Tables\Columns\TextColumn::make('persentase')
                     ->alignCenter()
-                    ->formatStateUsing(fn($state) => $state * 100 . '%')
+                    ->formatStateUsing(fn ($state) => $state * 100 . '%')
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->sortable(),
@@ -143,18 +143,18 @@ class QuickCountResource extends Resource
                 Tables\Columns\TextColumn::make('status_suara')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn(int $state): string => match ($state) {
+                    ->formatStateUsing(fn (int $state): string => match ($state) {
                         1 => 'SUARA SAH',
                         2 => 'SUARA TIDAK SAH',
                         3 => 'SUARA SEMENTARA',
                     })
-                    ->icon(fn(int $state): string => match ($state) {
+                    ->icon(fn (int $state): string => match ($state) {
                         1 => 'heroicon-o-check-circle',
                         2 => 'heroicon-minus-circle',
                         3 => 'heroicon-o-pause-circle',
                     })
                     ->iconPosition(IconPosition::Before)
-                    ->color(fn(int $state): string => match ($state) {
+                    ->color(fn (int $state): string => match ($state) {
                         1 => 'success',
                         2 => 'danger',
                         3 => 'warning',
@@ -174,7 +174,7 @@ class QuickCountResource extends Resource
                     ->label('Berdasarkan status suara')
                     ->options(config('custom.status.suara')),
             ])->persistFiltersInSession()
-            ->filtersTriggerAction(fn(Tables\Actions\Action $action) => $action->button()->label('Filter'))
+            ->filtersTriggerAction(fn (Tables\Actions\Action $action) => $action->button()->label('Filter'))
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
