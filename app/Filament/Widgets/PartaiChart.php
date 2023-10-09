@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\HitungSuaraPartai;
+use Illuminate\Database\Eloquent\Builder;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class PartaiChart extends ApexChartWidget
@@ -24,17 +26,21 @@ class PartaiChart extends ApexChartWidget
 
     protected static ?string $loadingIndicator = 'Sedang memuat...';
 
-    public ?string $filter = 'today';
+    protected static ?int $sort = 2;
+
+    public ?string $filter = 'all';
 
     protected int | string | array $columnSpan = 'full';
 
     protected function getFilters(): ?array
     {
         return [
-            'today' => 'Today',
-            'week' => 'Last week',
-            'month' => 'Last month',
-            'year' => 'This year',
+            'today' => 'Hari Ini',
+            'week' => 'Minggu Lalu',
+            'month' => 'Bulan Lalu',
+            'year' => 'Tahun Ini',
+            'all' => 'Semua',
+
         ];
     }
 
@@ -52,7 +58,27 @@ class PartaiChart extends ApexChartWidget
         //slow query
         sleep(2);
 
-        $activeFilter = $this->filter;
+        $filter = match ($this->filter) {
+            'today' => today(),
+            'week' => today()->subWeek(),
+            'month' => today()->subMonth(),
+            'year' => today()->subYear(),
+            default => ''
+        };
+
+        $hitung = HitungSuaraPartai::query()
+            ->when($filter, function (Builder $query) use ($filter) {
+                $query->where('created_at', $filter);
+            })
+            ->with('partai')->get();
+        $partai = $hitung->map(function ($item, $key) {
+            $dta = [];
+            $dta['nama_partai'] = $item->partai->alias;
+            $dta['suara'] = $item->jumlah_suara_partai;
+            $dta['warna'] = $item->partai->warna;
+
+            return $dta;
+        });
 
         return [
             'chart' => [
@@ -61,12 +87,12 @@ class PartaiChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'Total Partai',
-                    'data' => [7, 10, 13, 15, 18],
+                    'name' => 'Total Suara',
+                    'data' => \Arr::map($partai->toArray(), static fn ($item) => $item['suara']),
                 ],
             ],
             'xaxis' => [
-                'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                'categories' => \Arr::map($partai->toArray(), static fn ($item) => $item['nama_partai']),
                 'labels' => [
                     'style' => [
                         'fontFamily' => 'inherit',
@@ -80,11 +106,11 @@ class PartaiChart extends ApexChartWidget
                     ],
                 ],
             ],
-            'colors' => ['#f59e0b'],
+            'colors' => ['#ffd77d', \Arr::map($partai->toArray(), static fn ($item) => $item['warna'])],
             'plotOptions' => [
                 'bar' => [
                     'borderRadius' => 3,
-                    'horizontal' => false,
+                    'horizontal' => true,
                 ],
             ],
         ];

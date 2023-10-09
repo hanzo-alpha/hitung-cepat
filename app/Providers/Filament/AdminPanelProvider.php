@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use Awcodes\Curator\CuratorPlugin;
+use App\Filament\Widgets\QuickCountInfo;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -21,23 +21,25 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
+use Shipu\WebInstaller\Middleware\RedirectIfNotInstalled;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->topNavigation()
             ->default()
             ->spa()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             ->login()
             ->profile()
             ->passwordReset()
             ->darkMode(false)
             ->font('Poppins')
             ->databaseNotifications()
-//            ->databaseNotificationsPolling('10s')
+            ->databaseNotificationsPolling('10s')
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
@@ -49,13 +51,13 @@ class AdminPanelProvider extends PanelProvider
                     ),
                 SpotlightPlugin::make(),
                 FilamentShieldPlugin::make(),
-                CuratorPlugin::make()
-                    ->label('Media')
-                    ->pluralLabel('Media')
-                    ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Master')
-                    ->navigationSort(3)
-                    ->navigationCountBadge(),
+                //                CuratorPlugin::make()
+                //                    ->label('Media')
+                //                    ->pluralLabel('Media')
+                //                    ->navigationIcon('heroicon-o-photo')
+                //                    ->navigationGroup('Master')
+                //                    ->navigationSort(3)
+                //                    ->navigationCountBadge(),
             ])
             ->colors([
                 'primary' => Color::Blue,
@@ -69,6 +71,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                QuickCountInfo::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -80,6 +83,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RedirectIfNotInstalled::class,
             ])
             ->resources([
                 config('filament-logger.activity_resource'),

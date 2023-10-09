@@ -10,9 +10,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('partai_caleg', function (Blueprint $table) {
+        Schema::create('partai_caleg', static function (Blueprint $table) {
             $table->foreignId('partai_id')->constrained('partai')->cascadeOnDelete();
-            $table->foreignId('caleg_id')->constrained('calegs')->cascadeOnDelete();
+            $table->foreignId('caleg_id')->constrained('caleg')->cascadeOnDelete();
         });
     }
 };

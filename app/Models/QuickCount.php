@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use KodePandai\Indonesia\Models\City;
 use KodePandai\Indonesia\Models\District;
 use KodePandai\Indonesia\Models\Province;
@@ -19,6 +18,8 @@ class QuickCount extends Model
 {
     use HasFactory;
 
+    protected $table = 'quick_count';
+
     protected $fillable = [
         'tps_id',
         'caleg_id',
@@ -27,15 +28,21 @@ class QuickCount extends Model
         'status_suara',
     ];
 
+    protected $casts = [
+        'persentase' => 'float',
+        'jumlah_suara' => 'integer',
+        'status_suara' => 'integer',
+    ];
+
     public function tps(): BelongsTo
     {
         return $this->belongsTo(Tps::class);
     }
 
-    public function tpsdata(): HasManyThrough
-    {
-        return $this->hasManyThrough(DataTps::class, Tps::class);
-    }
+    //    public function data_tps(): HasMany
+    //    {
+    //        return $this->hasMany(TpsDataTps::class);
+    //    }
 
     public function data_tps(): BelongsTo
     {
@@ -67,8 +74,8 @@ class QuickCount extends Model
         return $this->belongsToMany(Caleg::class, 'quick_count_caleg');
     }
 
-    public function calegPartai(): HasOneThrough
+    public function calegPartai()
     {
-        return $this->hasOneThrough(Caleg::class, Partai::class);
+        return $this->caleg;
     }
 }

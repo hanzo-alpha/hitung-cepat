@@ -12,7 +12,7 @@ class PartaiExport extends ExcelExport
     public function setUp(): void
     {
         $this->askForFilename()
-            ->withFilename(fn($filename) => date('YmdHis') . '-' . $filename)
+            ->withFilename(fn ($filename) => date('YmdHis') . '-' . $filename)
             ->withColumns([
                 Column::make('no_urut')->heading('No. Urut Partai'),
                 Column::make('nama_partai')->heading('Nama Partai'),

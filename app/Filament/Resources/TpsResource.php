@@ -3,18 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TpsResource\Pages;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
+use App\Models\Provinsi;
 use App\Models\Tps;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use KodePandai\Indonesia\Models\City;
-use KodePandai\Indonesia\Models\District;
-use KodePandai\Indonesia\Models\Province;
-use KodePandai\Indonesia\Models\Village;
 
 class TpsResource extends Resource
 {
@@ -34,82 +39,86 @@ class TpsResource extends Resource
             ->schema([
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make()->schema([
+                        TextInput::make('jumlah_tps')
+                            ->label('Jumlah TPS')
+                            ->helperText('Jumlah TPS yang akan digenerate otomatis. Ex: TPS 1, TPS 2, dst, sesuai jumlah yang dimasukkan')
+                            ->hiddenOn('edit')
+                            ->required(),
                         TableRepeater::make('data_tps')
                             ->relationship('data_tps')
+                            ->required()
+                            ->hiddenOn('create')
+                            ->minItems(1)
                             ->label('Nama TPS')
                             ->schema([
-                                Forms\Components\TextInput::make('nama_tps'),
-                            ])->withoutHeader()->hideLabels(),
+                                Forms\Components\TextInput::make('nama_tps')->required(),
+                            ])
+                            ->withoutHeader()
+                            ->hideLabels(),
                     ])->columnSpanFull(),
                 ]),
 
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make()->schema([
                         Select::make('provinsi')
-                            ->nullable()
+                            ->required()
                             ->options(
-                                Province::all()
-                                    ->pluck('name', 'code')
+                                Provinsi::all()->pluck('name', 'code')
                             )
                             ->afterStateUpdated(fn (callable $set) => $set('kabupaten', null))
-                            ->reactive()
+                            ->lazy()
+                            ->live()
+                            ->default(config('custom.default.kodeprov'))
                             ->searchable(),
                         Select::make('kabupaten')
-                            ->nullable()
+                            ->required()
                             ->options(function (callable $get) {
-                                $prov = City::query()->where('province_code', $get('provinsi'));
+                                $prov = Kabupaten::query()->where('provinsi_code', $get('provinsi'));
                                 if (! $prov) {
-                                    return City::where('province_code', config('custom.default.kodeprov'))
+                                    return City::where('provinsi_code', config('custom.default.kodeprov'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $prov->pluck('name', 'code');
                             })
                             ->afterStateUpdated(fn (callable $set) => $set('kecamatan', null))
-                            ->reactive()
+                            ->live()
+                            ->lazy()
+                            ->default(config('custom.default.kodekab'))
                             ->searchable(),
 
                         Select::make('kecamatan')
-                            ->nullable()
+                            ->required()
                             ->searchable()
-                            ->reactive()
+                            ->live()
+                            ->lazy()
                             ->options(function (callable $get) {
-                                $kab = District::query()->where('city_code', $get('kabupaten'));
+                                $kab = Kecamatan::query()->where('kabupaten_code', $get('kabupaten'));
                                 if (! $kab) {
-                                    return District::where('city_code', config('custom.default.kodekab'))
+                                    return Kabupaten::where('kabupaten_code', config('custom.default.kodekab'))
                                         ->pluck('name', 'code');
                                 }
 
                                 return $kab->pluck('name', 'code');
                             })
-//                            ->hidden(fn (callable $get) => ! $get('kabupaten'))
                             ->afterStateUpdated(fn (callable $set) => $set('kelurahan', null)),
 
                         Select::make('kelurahan')
-                            ->nullable()
+                            ->required()
                             ->options(function (callable $get) {
-                                $kel = Village::query()->where('district_code', $get('kecamatan'));
+                                $kel = Kelurahan::query()->where('kecamatan_code', $get('kecamatan'));
                                 if (! $kel) {
-                                    return Village::where('district_code', '731211')
+                                    return Kelurahan::where('kecamatan_code', '731211')
                                         ->pluck('name', 'code');
                                 }
 
                                 return $kel->pluck('name', 'code');
                             })
-                            ->reactive()
+                            ->live()
+                            ->lazy()
                             ->searchable()
-//                            ->hidden(fn (callable $get) => ! $get('kecamatan'))
                             ->afterStateUpdated(function (callable $set, $state) {
-                                $village = Village::where('code', $state)->first();
-                                if ($village) {
-                                    $set('latitude', $village['latitude']);
-                                    $set('longitude', $village['longitude']);
-                                    $set('kode_pos', $village['postal_code']);
-                                    $set('location', [
-                                        'lat' => (float) $village['latitude'],
-                                        'lng' => (float) $village['longitude'],
-                                    ]);
-                                }
+                                return Kelurahan::where('code', $state)->first();
                             }),
                     ]),
                 ]),
@@ -119,6 +128,7 @@ class TpsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->defaultSort('nama_tps', 'asc')
             ->defaultGroup('kec.name')
             ->groups([
@@ -170,12 +180,34 @@ class TpsResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                        ->action(function ($record) {
+                            $record->data_tps()->delete();
+                            $record->delete();
+
+                            Notification::make()
+                                ->title('Data TPS berhasil dihapus')
+                                ->sendToDatabase(auth()->user());
+                        })
+                        ->successNotificationTitle('Data TPS berhasil dihapus'),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->action(function (Collection $records) {
+                            $records->each(fn (Model $record) => $record->data_tps()->delete());
+                            $records->each(fn (Model $record) => $record->delete());
+
+                            Notification::make()
+                                ->title($records->count() . ' Data TPS berhasil dihapus')
+                                ->sendToDatabase(auth()->user());
+                        })
+                        ->successNotificationTitle('Data yang dipilih berhasil dihapus')
+                        ->deselectRecordsAfterCompletion(),
+                    Tables\Actions\DetachBulkAction::make(),
                 ]),
             ]);
     }

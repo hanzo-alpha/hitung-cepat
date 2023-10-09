@@ -14,9 +14,13 @@ class JenisPemilihanFactory extends Factory
     public function definition(): array
     {
         return [
-            'institusi' => $this->faker->word(), //
-            'tingkat' => $this->faker->word(),
+            'nama_institusi' => $this->faker->company(), //
+            'tingkat_pemilihan' => $this->faker->companySuffix(),
+            'jumlah_dapil' => $this->faker->randomNumber(),
             'jumlah_kursi' => $this->faker->randomNumber(),
+            'total_dapil' => $this->faker->randomNumber(),
+            'total_kursi' => $this->faker->randomNumber(),
+            'deskripsi' => $this->faker->text(200),
         ];
     }
 }

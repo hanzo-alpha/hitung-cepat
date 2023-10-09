@@ -5,8 +5,6 @@ namespace App\Filament\Resources;
 use App\Exports\PartaiExport;
 use App\Filament\Resources\PartaiResource\Pages;
 use App\Models\Partai;
-use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -50,14 +48,16 @@ class PartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
+            ->defaultSort('no_urut', 'ASC')
             ->columns([
                 //                CuratorColumn::make('logo')->toggleable(),
-                Tables\Columns\TextColumn::make('no_urut')
-                    ->label('No. Urut')
-                    ->toggleable()
-                    ->alignCenter()
-                    ->searchable()
-                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('no_urut')
+                //                    ->label('No. Urut')
+                //                    ->toggleable()
+                //                    ->alignCenter()
+                //                    ->searchable()
+                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('nama_partai')
                     ->label('Nama Partai')
                     ->searchable()
@@ -74,10 +74,10 @@ class PartaiResource extends Resource
                     ->alignCenter()
                     ->copyableState(fn (Partai $record): string => $record->warna)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('calon_count')
-                    ->label('Total Calon')
+                Tables\Columns\TextColumn::make('caleg_count')
+                    ->label('Total Caleg')
                     ->alignCenter()
-                    ->counts('calon')
+                    ->counts('caleg')
                     ->badge()
                     ->color('info'),
             ])
@@ -85,8 +85,10 @@ class PartaiResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,7 +103,7 @@ class PartaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePartais::route('/'),
+            'index' => Pages\ManagePartai::route('/'),
         ];
     }
 }

@@ -10,16 +10,15 @@ use Filament\Support\Contracts\HasLabel;
 
 enum StatusSuara: string implements HasColor, HasIcon, HasLabel
 {
-    public const SUARA_SAH = 'Suara Sah';
+    case SUARA_SAH = 'SUARA SAH';
 
-    public const SUARA_TIDAK_SAH = 'Suara Tidak Sah';
+    case SUARA_TIDAK_SAH = 'SUARA TIDAK SAH';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::SUARA_SAH => 'Suara Sah',
-            self::SUARA_TIDAK_SAH => 'Suara Tidak Sah',
-            default => '',
+            self::SUARA_SAH => 'SUARA SAH',
+            self::SUARA_TIDAK_SAH => 'SUARA TIDAK SAH'
         };
     }
 
@@ -27,8 +26,7 @@ enum StatusSuara: string implements HasColor, HasIcon, HasLabel
     {
         return match ($this) {
             self::SUARA_SAH => 'success',
-            self::SUARA_TIDAK_SAH => 'danger',
-            default => '',
+            self::SUARA_TIDAK_SAH => 'danger'
         };
     }
 
@@ -36,8 +34,7 @@ enum StatusSuara: string implements HasColor, HasIcon, HasLabel
     {
         return match ($this) {
             self::SUARA_SAH => 'heroicon-m-check-badge',
-            self::SUARA_TIDAK_SAH => 'heroicon-m-eye-slash',
-            default => '',
+            self::SUARA_TIDAK_SAH => 'heroicon-m-eye-slash'
         };
     }
 }

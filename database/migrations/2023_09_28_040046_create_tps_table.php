@@ -10,15 +10,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tps', function (Blueprint $table) {
+        Schema::create('tps', static function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('data_tps_id')->nullable();
-            $table->string('nama_tps');
+            $table->string('nama_tps')->nullable();
             $table->string('provinsi')->nullable();
             $table->string('kabupaten')->nullable();
             $table->string('kecamatan');
             $table->string('kelurahan');
             $table->unsignedMediumInteger('jumlah_tps')->nullable()->default(0);
+            $table->json('data_tps')->nullable();
             $table->text('keterangan')->nullable();
         });
     }

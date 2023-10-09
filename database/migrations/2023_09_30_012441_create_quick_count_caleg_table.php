@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('quick_count_caleg', static function (Blueprint $table) {
-            $table->foreignIdFor(QuickCount::class)->constrained('quick_counts')->cascadeOnDelete();
-            $table->foreignIdFor(Caleg::class)->constrained('calegs')->cascadeOnDelete();
+            $table->foreignIdFor(QuickCount::class)->constrained('quick_count')->cascadeOnDelete();
+            $table->foreignIdFor(Caleg::class)->constrained('caleg')->cascadeOnDelete();
         });
     }
 };
