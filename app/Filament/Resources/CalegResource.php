@@ -86,12 +86,12 @@ class CalegResource extends Resource
                     ->toggleable()
                     ->toggledHiddenByDefault()
                     ->badge()
-                    ->formatStateUsing(fn(int $state): string => Helpers::getNamaJenisKelamin($state))
-                    ->icon(fn(int $state): string => match ($state) {
+                    ->formatStateUsing(fn (int $state): string => Helpers::getNamaJenisKelamin($state))
+                    ->icon(fn (int $state): string => match ($state) {
                         1 => 'heroicon-o-user',
                         2 => 'heroicon-o-users',
                     })
-                    ->color(fn(int $state): string => match ($state) {
+                    ->color(fn (int $state): string => match ($state) {
                         1 => 'success',
                         2 => 'primary',
                     }),
