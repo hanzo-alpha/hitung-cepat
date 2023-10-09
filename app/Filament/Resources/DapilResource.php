@@ -4,13 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DapilResource\Pages;
 use App\Models\Dapil;
+use App\Models\Provinsi;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use KodePandai\Indonesia\Models\Province;
 
 class DapilResource extends Resource
 {
@@ -39,8 +39,7 @@ class DapilResource extends Resource
                         ->optionsLimit(20)
                         ->lazy()
                         ->options(
-                            Province::all()
-                                ->pluck('name', 'code')
+                            Provinsi::query()->pluck('name', 'code')
                         )
                         ->searchable(),
                     Forms\Components\TextInput::make('nama_dapil')

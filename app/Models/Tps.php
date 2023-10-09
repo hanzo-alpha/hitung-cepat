@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Traits\HasWilayah;
+use App\Traits\HasRegions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tps extends Model
 {
-    use HasWilayah;
+    use HasRegions;
 
     public $timestamps = false;
 
@@ -57,24 +57,4 @@ class Tps extends Model
     {
         return $this->belongsToMany(DataTps::class, 'tps_data_tps');
     }
-
-    //    public function prov(): BelongsTo
-    //    {
-    //        return $this->belongsTo(Province::class, 'provinsi', 'code');
-    //    }
-    //
-    //    public function kab(): BelongsTo
-    //    {
-    //        return $this->belongsTo(City::class, 'kabupaten', 'code');
-    //    }
-    //
-    //    public function kec(): BelongsTo
-    //    {
-    //        return $this->belongsTo(District::class, 'kecamatan', 'code');
-    //    }
-    //
-    //    public function kel(): BelongsTo
-    //    {
-    //        return $this->belongsTo(Village::class, 'kelurahan', 'code');
-    //    }
 }

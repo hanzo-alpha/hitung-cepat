@@ -7,14 +7,14 @@ namespace App\Models;
 use App\Enums\JenisKelamin;
 use App\Enums\StatusAktif;
 use App\Enums\StatusDaftarPemilih;
-use App\Traits\HasWilayah;
+use App\Traits\HasRegions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class DaftarPemilih extends Model
 {
     use HasFactory;
-    use HasWilayah;
+    use HasRegions;
 
     protected $table = 'daftar_pemilih';
 
