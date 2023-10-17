@@ -9,7 +9,7 @@ use Faker\Provider\Color;
 
 class Helpers
 {
-    public static function hitungPresentase(int $nilai, $format = false): float | string
+    public static function hitungPresentase(int $nilai, $format = false): float | string | int
     {
         $persentase = (float) 0.0;
         $totalDpt = config('custom.angka_default.total_dpt');
@@ -178,7 +178,7 @@ class Helpers
         return $n_format . $suffix;
     }
 
-    public static function shortNumber($num)
+    public static function shortNumber($num): string | float | int
     {
         $units = ['', 'K', 'M', 'B', 'T'];
         for ($i = 0; $num >= 1000; $i++) {

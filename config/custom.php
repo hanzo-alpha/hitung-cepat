@@ -47,10 +47,7 @@ return [
         ],
     ],
     'version' => [
-        'git' => [
-            'remote' => [
-                'repository' => env('VERSION_GIT_REMOTE_REPOSITORY'),
-            ],
-        ],
+        'app' => 'v1.0.0',
+        'name' => 'SIMKADA',
     ],
 ];

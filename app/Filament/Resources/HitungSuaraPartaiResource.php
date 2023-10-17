@@ -60,8 +60,9 @@ class HitungSuaraPartaiResource extends Resource
                                 ->default(0),
                             Forms\Components\TextInput::make('jumlah_dapil')
                                 ->label('Jumlah Dapil')
+                                ->hidden()
                                 ->integer()
-                                ->default(0),
+                                ->default(1),
                             Forms\Components\TextInput::make('jumlah_kursi')
                                 ->label('Jumlah Kursi')
                                 ->integer()
@@ -94,16 +95,20 @@ class HitungSuaraPartaiResource extends Resource
                     ->label('Jenis Pemilihan')
                     ->badge()
                     ->searchable()
+                    ->toggleable()
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_suara_partai')
                     ->label('Jumlah Suara')
                     ->alignCenter()
+                    ->toggleable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_dapil')
                     ->label('Jumlah Dapil')
                     ->alignCenter()
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_kursi')
@@ -152,7 +157,7 @@ class HitungSuaraPartaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageHitungSuaraPartais::route('/'),
+            'index' => Pages\ManageHitungSuaraPartai::route('/'),
         ];
     }
 }

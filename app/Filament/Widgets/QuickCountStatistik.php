@@ -31,7 +31,7 @@ class QuickCountStatistik extends BaseWidget
                 ->description('Total Jumlah Suara Calon')
                 ->descriptionIcon('heroicon-m-calculator')
                 ->color('warning'),
-            Stat::make('Suara Partai', Helpers::shortNumber(HitungSuaraPartai::sum('jumlah_suara_partai')))
+            Stat::make('Suara Partai', Helpers::shortNumber((float) HitungSuaraPartai::sum('jumlah_suara_partai')))
                 ->description('Total Suara Partai')
                 ->descriptionIcon('heroicon-m-calculator')
                 ->color('info'),
