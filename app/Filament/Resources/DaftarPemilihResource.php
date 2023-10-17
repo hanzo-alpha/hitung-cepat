@@ -25,13 +25,15 @@ class DaftarPemilihResource extends Resource
 {
     protected static ?string $model = DaftarPemilih::class;
 
-    protected static ?string $slug = 'daftar-pemilih';
+    protected static ?string $slug = 'pendukung';
 
-    protected static ?string $label = 'Daftar Pemilih';
+    protected static ?string $label = 'Pendukung / Pemilih';
 
-    protected static ?string $pluralLabel = 'Daftar Pemilih';
+    protected static ?string $pluralLabel = 'Pendukung / Pemilih';
 
     protected static ?string $navigationGroup = 'Master';
+
+    protected static ?string $navigationLabel = 'Pendukung';
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 

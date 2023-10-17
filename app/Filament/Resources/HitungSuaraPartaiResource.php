@@ -76,7 +76,7 @@ class HitungSuaraPartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->poll('10s')
+            ->poll()
             ->emptyStateDescription('Setelah Anda mengisi form pertama Anda, hasilnya akan muncul di sini')
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make()
@@ -130,6 +130,7 @@ class HitungSuaraPartaiResource extends Resource
             ->filtersTriggerAction(fn (Tables\Actions\Action $action) => $action->button()->label('Filter'))
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ]),
