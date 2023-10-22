@@ -60,8 +60,9 @@ class HitungSuaraPartaiResource extends Resource
                                 ->default(0),
                             Forms\Components\TextInput::make('jumlah_dapil')
                                 ->label('Jumlah Dapil')
+                                ->hidden()
                                 ->integer()
-                                ->default(0),
+                                ->default(1),
                             Forms\Components\TextInput::make('jumlah_kursi')
                                 ->label('Jumlah Kursi')
                                 ->integer()
@@ -75,7 +76,7 @@ class HitungSuaraPartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->poll('10s')
+            ->poll()
             ->emptyStateDescription('Setelah Anda mengisi form pertama Anda, hasilnya akan muncul di sini')
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make()
@@ -94,16 +95,20 @@ class HitungSuaraPartaiResource extends Resource
                     ->label('Jenis Pemilihan')
                     ->badge()
                     ->searchable()
+                    ->toggleable()
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_suara_partai')
                     ->label('Jumlah Suara')
                     ->alignCenter()
+                    ->toggleable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_dapil')
                     ->label('Jumlah Dapil')
                     ->alignCenter()
+                    ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_kursi')
@@ -125,6 +130,7 @@ class HitungSuaraPartaiResource extends Resource
             ->filtersTriggerAction(fn (Tables\Actions\Action $action) => $action->button()->label('Filter'))
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
                 ]),
@@ -152,7 +158,7 @@ class HitungSuaraPartaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageHitungSuaraPartais::route('/'),
+            'index' => Pages\ManageHitungSuaraPartai::route('/'),
         ];
     }
 }
