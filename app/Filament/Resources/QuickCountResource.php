@@ -113,6 +113,14 @@ class QuickCountResource extends Resource
                     ->button(),
             ])
             ->striped()
+            ->groups([
+                Tables\Grouping\Group::make('tps.kec.name')
+                    ->label('Kecamatan')
+                    ->getTitleFromRecordUsing(fn ($record): string => $record->tps->kec->name),
+                Tables\Grouping\Group::make('tps.kel.name')
+                    ->label('Kelurahan'),
+            ])
+            ->defaultGroup('tps.kec.name')
             ->columns([
                 Tables\Columns\TextColumn::make('caleg.nama_caleg')
                     ->label('Nama Calon')

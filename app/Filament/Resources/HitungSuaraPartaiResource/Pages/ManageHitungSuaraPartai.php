@@ -7,7 +7,7 @@ use App\Utilities\Helpers;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageHitungSuaraPartais extends ManageRecords
+class ManageHitungSuaraPartai extends ManageRecords
 {
     protected static string $resource = HitungSuaraPartaiResource::class;
 
@@ -43,6 +43,7 @@ class ManageHitungSuaraPartais extends ManageRecords
             Actions\CreateAction::make()
                 ->mutateFormDataUsing(function (array $data) {
                     $data['persentase_suara'] = Helpers::hitungPresentase($data['jumlah_suara_partai']);
+                    $data['jumlah_dapil'] = 1;
 
                     return $data;
                 })

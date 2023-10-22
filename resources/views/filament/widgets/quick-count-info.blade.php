@@ -60,7 +60,7 @@
                     {{ __('filament-panels::widgets/filament-info-widget.actions.open_github.label') }}
                 </x-filament::link>
                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    @version('compact')
+                    {{ config('custom.version.name') . ' ' . config('custom.version.app') }}
                 </p>
             </div>
         </div>

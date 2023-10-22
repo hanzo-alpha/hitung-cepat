@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 use App\Models\HitungSuaraPartai;
+use Carbon\Carbon;
+use DateTime;
 use Faker\Provider\Color;
 
 class Helpers
 {
-    public static function hitungPresentase(int $nilai, $format = false): float | string
+    public static function hitungPresentase(int $nilai, $format = false): float | string | int
     {
         $persentase = (float) 0.0;
         $totalDpt = config('custom.angka_default.total_dpt');
@@ -178,7 +180,7 @@ class Helpers
         return $n_format . $suffix;
     }
 
-    public static function shortNumber($num)
+    public static function shortNumber($num): string | float | int
     {
         $units = ['', 'K', 'M', 'B', 'T'];
         for ($i = 0; $num >= 1000; $i++) {
@@ -186,5 +188,36 @@ class Helpers
         }
 
         return round($num, 1) . $units[$i];
+    }
+
+    public static function hitungUmur($date)
+    {
+        $tanggal_lahir = date('Y-m-d', strtotime('1995-06-13'));
+
+        $birthDate = new DateTime($tanggal_lahir);
+        $today = new DateTime('today');
+        if ($birthDate > $today) {
+            exit('0 tahun 0 bulan 0 hari');
+        }
+        $y = $today->diff($birthDate)->y;
+        // dd($y);
+        $m = $today->diff($birthDate)->m;
+        $d = $today->diff($birthDate)->d;
+
+        return $y . ' tahun ' . $m . ' bulan ' . $d . ' hari';
+    }
+
+    public static function getUmur($date, $format = false): int | string
+    {
+        $now = Carbon::now(); // Tanggal sekarang
+        $date = ($date instanceof Carbon) ? $date : Carbon::parse($date)->format('Y-m-d');
+        $b_day = Carbon::parse($date); // Tanggal Lahir
+        $age = $b_day->diffInYears($now);  // Menghitung umur
+
+        if ($format) {
+            return 'Umurnya Adalah ' . $age . ' Tahun'; // 6 Th
+        }
+
+        return $age;
     }
 }
