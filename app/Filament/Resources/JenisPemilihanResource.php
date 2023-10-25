@@ -18,7 +18,7 @@ class JenisPemilihanResource extends Resource
 {
     protected static ?string $model = JenisPemilihan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+//    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $slug = 'jenis-pemilihan';
 

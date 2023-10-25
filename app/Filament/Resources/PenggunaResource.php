@@ -22,7 +22,7 @@ class PenggunaResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+//    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $label = 'Pengguna';
 
@@ -32,7 +32,7 @@ class PenggunaResource extends Resource
 
     protected static ?string $navigationLabel = 'Pengguna';
 
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static ?string $navigationGroup = 'Tools';
 
     public static function form(Form $form): Form
     {

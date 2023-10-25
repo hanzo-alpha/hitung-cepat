@@ -16,7 +16,7 @@ class DapilResource extends Resource
 {
     protected static ?string $model = Dapil::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+//    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     protected static ?string $slug = 'dapil';
 
@@ -45,6 +45,10 @@ class DapilResource extends Resource
                     Forms\Components\TextInput::make('nama_dapil')
                         ->required()
                         ->maxLength(255),
+                    Select::make('jenis_pemilihan')
+                        ->relationship('jenisPemilihan', 'nama_institusi')
+                        ->preload()
+                        ->lazy(),
                     Forms\Components\TextInput::make('jumlah_dapil')
                         ->numeric()
                         ->default(0),

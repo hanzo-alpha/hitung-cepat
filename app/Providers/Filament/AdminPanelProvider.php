@@ -7,6 +7,7 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -72,6 +73,15 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 QuickCountInfo::class,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Tim Relawan')
+                    ->icon('heroicon-o-users'),
+                NavigationGroup::make('Master')
+                    ->icon('heroicon-o-circle-stack'),
+                NavigationGroup::make('Tools')
+                    ->icon('heroicon-o-cog-6-tooth'),
+                NavigationGroup::make('Pengaturan'),
             ])
             ->middleware([
                 EncryptCookies::class,

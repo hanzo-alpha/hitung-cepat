@@ -8,6 +8,7 @@ use App\Enums\StatusAktif;
 use App\Traits\HasRegions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Relawan extends Model
 {
@@ -38,4 +39,9 @@ class Relawan extends Model
         'tgl_lahir' => 'date',
         'status_relawan' => StatusAktif::class,
     ];
+
+    public function kegiatan(): BelongsToMany
+    {
+        return $this->belongsToMany(Kegiatan::class, 'kegiatan_relawan');
+    }
 }

@@ -35,7 +35,7 @@ class DaftarPemilihResource extends Resource
 
     protected static ?string $navigationLabel = 'Pendukung';
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+//    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $recordTitleAttribute = 'nama_lengkap';
 

@@ -14,7 +14,7 @@ class ImportDaftarPemilihResource extends Resource
 {
     protected static ?string $model = ImportDaftarPemilih::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
+//    protected static ?string $navigationIcon = 'heroicon-o-arrow-down-tray';
 
     protected static ?string $slug = 'import-daftar-pemilih';
 
@@ -22,7 +22,7 @@ class ImportDaftarPemilihResource extends Resource
 
     protected static ?string $pluralLabel = 'Import DPT';
 
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static ?string $navigationGroup = 'Tools';
 
     protected static ?string $recordTitleAttribute = 'id';
 

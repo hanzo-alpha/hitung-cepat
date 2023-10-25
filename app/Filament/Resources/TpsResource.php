@@ -25,7 +25,7 @@ class TpsResource extends Resource
 {
     protected static ?string $model = Tps::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
+//    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
 
     protected static ?string $label = 'Tempat Pemungutan Suara (TPS)';
 
@@ -150,7 +150,6 @@ class TpsResource extends Resource
                     ->titlePrefixedWithLabel(false),
             ])
             ->columns([
-
                 Tables\Columns\TextColumn::make('data_tps.nama_tps')
                     ->label('Nama TPS')
                     ->badge()
@@ -158,6 +157,7 @@ class TpsResource extends Resource
                 Tables\Columns\TextColumn::make('prov.name')
                     ->label('Provinsi')
                     ->toggleable()
+                    ->toggledHiddenByDefault()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kab.name')
@@ -171,13 +171,31 @@ class TpsResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('kel.name')
-                    ->label('Kelurahan/Desa')
+                    ->label('Kelurahan Desa')
                     ->toggleable()
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('jumlah_tps')
+                    ->label('Jumlah')
+                    ->alignCenter()
+                    ->counts('data_tps')
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('kabupaten')
+                    ->relationship('kab', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->optionsLimit(20),
+                Tables\Filters\SelectFilter::make('kecamatan')
+                    ->relationship('kec', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->optionsLimit(20),
+                Tables\Filters\SelectFilter::make('kelurahan')
+                    ->relationship('kel', 'name')
+                    ->multiple()
+                    ->searchable()
+                    ->optionsLimit(20)
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
