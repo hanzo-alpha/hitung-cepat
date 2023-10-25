@@ -29,7 +29,7 @@ class Dapil extends Model
     ];
 
     protected $casts = [
-        'daerah_pemilihan' => 'array'
+        'daerah_pemilihan' => 'array',
     ];
 
     public function jenisPemilihan(): BelongsTo

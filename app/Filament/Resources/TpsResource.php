@@ -25,7 +25,7 @@ class TpsResource extends Resource
 {
     protected static ?string $model = Tps::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
+    //    protected static ?string $navigationIcon = 'heroicon-o-table-cells';
 
     protected static ?string $label = 'Tempat Pemungutan Suara (TPS)';
 
@@ -178,7 +178,7 @@ class TpsResource extends Resource
                 Tables\Columns\TextColumn::make('jumlah_tps')
                     ->label('Jumlah')
                     ->alignCenter()
-                    ->counts('data_tps')
+                    ->counts('data_tps'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('kabupaten')
@@ -195,7 +195,7 @@ class TpsResource extends Resource
                     ->relationship('kel', 'name')
                     ->multiple()
                     ->searchable()
-                    ->optionsLimit(20)
+                    ->optionsLimit(20),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

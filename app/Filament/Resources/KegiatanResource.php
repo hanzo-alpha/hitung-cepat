@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KegiatanResource\Pages;
-use App\Filament\Resources\KegiatanResource\RelationManagers;
 use App\Models\Kegiatan;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,7 +14,7 @@ class KegiatanResource extends Resource
 {
     protected static ?string $model = Kegiatan::class;
 
-//    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    //    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $slug = 'kegiatan';
 
