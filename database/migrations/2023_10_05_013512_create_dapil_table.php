@@ -12,11 +12,13 @@ return new class extends Migration
     {
         Schema::create('dapil', static function (Blueprint $table) {
             $table->id();
-            $table->string('provinsi');
-            $table->string('kabupaten');
-            $table->string('kecamatan')->nullable();
-            $table->string('kelurahan')->nullable();
+            $table->char('provinsi', 2);
+            $table->char('kabupaten', 4);
+            $table->char('kecamatan', 7)->nullable();
+            $table->char('kelurahan', 10)->nullable();
             $table->string('nama_dapil');
+            $table->foreignId('jenis_pemilihan')->constrained('jenis_pemilihan')->cascadeOnDelete();
+            $table->json('daerah_pemilihan')->nullable();
             $table->unsignedInteger('jumlah_dapil')->nullable()->default(0);
             $table->unsignedInteger('jumlah_kursi')->nullable()->default(0);
             $table->timestamps(); //
