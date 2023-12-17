@@ -7,6 +7,7 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -39,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(false)
             ->font('Poppins')
             ->databaseNotifications()
-            ->databaseNotificationsPolling('10s')
+//            ->databaseNotificationsPolling('30s')
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
@@ -62,6 +63,17 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label('Tim Relawan')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Master')
+                    ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Pengaturan')
+                    ->collapsed(true),
+            ])
             ->favicon(asset('images/favicon.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -72,6 +84,15 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 QuickCountInfo::class,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Tim Relawan')
+                    ->icon('heroicon-o-users'),
+                NavigationGroup::make('Master')
+                    ->icon('heroicon-o-circle-stack'),
+                NavigationGroup::make('Tools')
+                    ->icon('heroicon-o-cog-6-tooth'),
+                NavigationGroup::make('Pengaturan'),
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -63,7 +63,9 @@ return [
         ],
 
         'widgets' => [
-            'AccountWidget', 'FilamentInfoWidget',
+            'AccountWidget',
+            'FilamentInfoWidget',
+            'PartaiChart',
         ],
 
         'resources' => [],

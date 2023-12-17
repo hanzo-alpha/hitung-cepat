@@ -22,7 +22,7 @@ class RelawanResource extends Resource
 {
     protected static ?string $model = Relawan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user';
+    //    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $slug = 'relawan';
 
@@ -30,7 +30,7 @@ class RelawanResource extends Resource
 
     protected static ?string $label = 'Relawan';
 
-    protected static ?string $navigationGroup = 'Master';
+    protected static ?string $navigationGroup = 'Tim Relawan';
 
     public static function form(Form $form): Form
     {
@@ -88,7 +88,7 @@ class RelawanResource extends Resource
                 ]),
 
                 Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Wilayah Relawan')->schema([
+                    Forms\Components\Section::make('Wilayah')->schema([
                         Select::make('provinsi')
                             ->required()
                             ->options(
