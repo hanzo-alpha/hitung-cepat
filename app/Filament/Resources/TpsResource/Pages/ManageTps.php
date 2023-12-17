@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\TpsResource\Pages;
 
 use App\Filament\Resources\TpsResource;
-use App\Models\DataTps;
 use App\Models\Tps;
 use Filament\Actions;
 use Filament\Notifications\Notification;
@@ -18,19 +17,21 @@ class ManageTps extends ManageRecords
         return [
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->mutateFormDataUsing(function (array $data) {
-                    $data['nama_tps'] = 'TPS';
-                    $data['persentase'] = 0.0;
-
-                    return $data;
-                })
                 ->using(function (array $data) {
-                    $data['nama_tps'] = config('custom.nama_tps', 'TPS') . ' ' . $data['jumlah_tps'];
-                    $insertTps = Tps::create($data);
+                    $data['nama_tps'] = $data['jumlah_tps'] . ' ' . config('custom.nama_tps', 'TPS');
+                    $insertTps = Tps::updateOrCreate([
+                        'provinsi' => $data['provinsi'],
+                        'kabupaten' => $data['kabupaten'],
+                        'kecamatan' => $data['kecamatan'],
+                        'kelurahan' => $data['kelurahan'],
+                    ], $data);
                     $lastInsertId = $insertTps->id;
                     for ($i = 1; $i <= $data['jumlah_tps']; $i++) {
                         $namaTps = config('custom.nama_tps', 'TPS') . ' ' . $i;
-                        DataTps::create([
+                        $insertTps->data_tps()->updateOrCreate([
+                            'tps_id' => $lastInsertId,
+                            'nama_tps' => $namaTps,
+                        ], [
                             'tps_id' => $lastInsertId,
                             'nama_tps' => $namaTps,
                         ]);
@@ -40,7 +41,9 @@ class ManageTps extends ManageRecords
                 })
                 ->after(function (array $data) {
                     Notification::make()
+                        ->success()
                         ->title($data['jumlah_tps'] . ' TPS Berhasil ditambahkan')
+                        ->send()
                         ->sendToDatabase(auth()->user());
                 }),
         ];

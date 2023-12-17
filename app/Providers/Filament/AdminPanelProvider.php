@@ -40,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(false)
             ->font('Poppins')
             ->databaseNotifications()
-            ->databaseNotificationsPolling('10s')
+//            ->databaseNotificationsPolling('30s')
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(

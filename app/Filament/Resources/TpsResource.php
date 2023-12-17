@@ -42,17 +42,17 @@ class TpsResource extends Resource
                         TextInput::make('jumlah_tps')
                             ->label('Jumlah TPS')
                             ->helperText('Jumlah TPS yang akan digenerate otomatis. Ex: TPS 1, TPS 2, dst, sesuai jumlah yang dimasukkan')
-                            ->hiddenOn('edit')
+                            ->hiddenOn(['edit', 'view'])
                             ->required(),
                         TableRepeater::make('data_tps')
                             ->relationship('data_tps')
                             ->required()
                             ->hiddenOn('create')
+                            ->simple(
+                                Forms\Components\TextInput::make('nama_tps')->required()
+                            )
                             ->minItems(1)
                             ->label('Nama TPS')
-                            ->schema([
-                                Forms\Components\TextInput::make('nama_tps')->required(),
-                            ])
                             ->withoutHeader()
                             ->hideLabels(),
                     ])->columnSpanFull(),
@@ -128,7 +128,6 @@ class TpsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->striped()
             ->defaultSort('nama_tps', 'asc')
             ->defaultGroup('kec.name')
             ->groups([
@@ -150,31 +149,30 @@ class TpsResource extends Resource
                     ->titlePrefixedWithLabel(false),
             ])
             ->columns([
-
-                Tables\Columns\TextColumn::make('data_tps.nama_tps')
-                    ->label('Nama TPS')
-                    ->badge()
-                    ->listWithLineBreaks(),
-                Tables\Columns\TextColumn::make('prov.name')
-                    ->label('Provinsi')
-                    ->toggleable()
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('kab.name')
-                    ->label('Kabupaten')
-                    ->toggleable()
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('kec.name')
-                    ->label('Kecamatan')
-                    ->toggleable()
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('kel.name')
                     ->label('Kelurahan/Desa')
                     ->toggleable()
                     ->searchable()
                     ->sortable(),
+                //                Tables\Columns\TextColumn::make('prov.name')
+                //                    ->label('Provinsi')
+                //                    ->toggleable()
+                //                    ->searchable()
+                //                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('kab.name')
+                //                    ->label('Kabupaten')
+                //                    ->toggleable()
+                //                    ->searchable()
+                //                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('kec.name')
+                //                    ->label('Kecamatan')
+                //                    ->toggleable()
+                //                    ->searchable()
+                //                    ->sortable(),
+                Tables\Columns\TextColumn::make('data_tps.nama_tps')
+                    ->label('Nama TPS')
+                    ->badge()
+                    ->wrap(),
             ])
             ->filters([
                 //

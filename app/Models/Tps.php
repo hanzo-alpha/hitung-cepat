@@ -41,10 +41,15 @@ class Tps extends Model
         ];
 
         for ($i = 0; $i <= $jumlah; $i++) {
-            $tpsDetails[$this->nama_tps] = 'TPS ' . $i;
+            $tpsDetails[$this->nama_tps] = $i . ' TPS';
             $tpsDetails[$this->jumlah_tps] = $tps->jumlah_tps ?? $i;
 
-            self::create($tpsDetails);
+            self::updateOrCreate([
+                'nama_tps' => $tpsDetails[$this->nama_tps],
+                'kabupaten' => $tpsDetails[$this->kabupaten],
+                'kecamatan' => $tpsDetails[$this->kecamatan],
+                'kelurahan' => $tpsDetails[$this->kelurahan],
+            ], $tpsDetails);
         }
     }
 
