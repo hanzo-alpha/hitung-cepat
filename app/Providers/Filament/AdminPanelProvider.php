@@ -32,12 +32,13 @@ class AdminPanelProvider extends PanelProvider
 //            ->topNavigation()
             ->default()
             ->spa()
+            ->maxContentWidth('full')
             ->id('admin')
             ->path('')
             ->login()
             ->profile()
             ->passwordReset()
-            ->darkMode(false)
+//            ->darkMode(false)
             ->font('Poppins')
             ->databaseNotifications()
 //            ->databaseNotificationsPolling('30s')
@@ -61,7 +62,7 @@ class AdminPanelProvider extends PanelProvider
                 //                    ->navigationCountBadge(),
             ])
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Yellow,
             ])
             ->navigationGroups([
                 NavigationGroup::make()
@@ -87,11 +88,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 NavigationGroup::make('Tim Relawan')
-                    ->icon('heroicon-o-users'),
+                    ->label('Tim Relawan'),
                 NavigationGroup::make('Master')
-                    ->icon('heroicon-o-circle-stack'),
+                    ->label('Master'),
                 NavigationGroup::make('Tools')
-                    ->icon('heroicon-o-cog-6-tooth'),
+                    ->label('Tools'),
                 NavigationGroup::make('Pengaturan'),
             ])
             ->middleware([

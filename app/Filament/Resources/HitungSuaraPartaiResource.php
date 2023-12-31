@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\HitungSuaraPartaiResource\Pages;
 use App\Models\HitungSuaraPartai;
+use App\Models\Partai;
+use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
@@ -13,7 +15,6 @@ use Filament\Tables\Table;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
 use pxlrbt\FilamentExcel\Columns\Column;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
-use RalphJSmit\Filament\Components\Forms\Sidebar;
 
 class HitungSuaraPartaiResource extends Resource
 {
@@ -31,44 +32,41 @@ class HitungSuaraPartaiResource extends Resource
     {
         return $form
             ->schema([
-                Sidebar::make([
-                    Section::make()
-                        ->schema([
-                            Forms\Components\Select::make('partai_id')
-                                ->relationship('partai', 'nama_partai')
-                                ->lazy()
-                                ->preload()
-                                ->optionsLimit(15)
-                                ->searchable()
-                                ->unique()
-                                ->required(),
-                            Forms\Components\Select::make('jenis_pemilihan_id')
-                                ->label('Jenis Pemilihan')
-                                ->relationship('jenisPemilihan', 'nama_institusi')
-                                ->lazy()
-                                ->preload()
-                                ->optionsLimit(15)
-                                ->searchable()
-                                ->required(),
-                        ]),
-                ], [
-                    Section::make()
-                        ->schema([
-                            Forms\Components\TextInput::make('jumlah_suara_partai')
-                                ->label('Jumlah Suara')
-                                ->integer()
-                                ->default(0),
-                            Forms\Components\TextInput::make('jumlah_dapil')
-                                ->label('Jumlah Dapil')
-                                ->hidden()
-                                ->integer()
-                                ->default(1),
-                            Forms\Components\TextInput::make('jumlah_kursi')
-                                ->label('Jumlah Kursi')
-                                ->integer()
-                                ->default(0),
-                        ]),
-                ]),
+                Section::make()
+                    ->schema([
+                        //                        Forms\Components\Select::make('jenis_pemilihan_id')
+                        //                            ->label('Jenis Pemilihan')
+                        //                            ->relationship('jenisPemilihan', 'nama_institusi')
+                        //                            ->lazy()
+                        //                            ->preload()
+                        //                            ->optionsLimit(15)
+                        //                            ->searchable()
+                        //                            ->required(),
+                        Forms\Components\TextInput::make('jumlah_kursi')
+                            ->label('Jumlah Kursi')
+                            ->integer()
+                            ->default(0),
+                    ])
+                    ->columnSpanFull()
+                    ->inlineLabel(),
+                TableRepeater::make('partai')
+                    ->columnSpanFull()
+                    ->relationship()
+                    ->columns(2)
+                    ->defaultItems(5)
+                    ->schema([
+                        Forms\Components\Select::make('hitung_suara_partai_id')
+                            ->hiddenLabel()
+                            ->options(Partai::pluck('nama_partai', 'id'))
+                            ->preload()
+                            ->searchable()
+                            ->optionsLimit(10)
+                            ->lazy(),
+                        Forms\Components\TextInput::make('jumlah_suara')
+                            ->integer()
+                            ->numeric()
+                            ->hiddenLabel(),
+                    ]),
 
             ]);
     }
@@ -76,7 +74,6 @@ class HitungSuaraPartaiResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->poll()
             ->emptyStateDescription('Setelah Anda mengisi form pertama Anda, hasilnya akan muncul di sini')
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make()

@@ -20,7 +20,7 @@ class CalegResource extends Resource
 {
     protected static ?string $model = Caleg::class;
 
-    //    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $slug = 'caleg';
 

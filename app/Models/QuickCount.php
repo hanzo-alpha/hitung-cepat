@@ -20,13 +20,15 @@ class QuickCount extends Model
 
     protected $table = 'quick_count';
 
-    protected $fillable = [
-        'tps_id',
-        'caleg_id',
-        'jumlah_suara',
-        'persentase',
-        'status_suara',
-    ];
+    protected $guarded = [];
+
+//    protected $fillable = [
+//        'tps_id',
+//        'caleg_id',
+//        'jumlah_suara',
+//        'persentase',
+//        'status_suara',
+//    ];
 
     protected $casts = [
         'persentase' => 'float',
@@ -38,11 +40,6 @@ class QuickCount extends Model
     {
         return $this->belongsTo(Tps::class);
     }
-
-    //    public function data_tps(): HasMany
-    //    {
-    //        return $this->hasMany(TpsDataTps::class);
-    //    }
 
     public function data_tps(): BelongsTo
     {

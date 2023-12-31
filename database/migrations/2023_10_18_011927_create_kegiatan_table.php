@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('nama_kegiatan');
             $table->string('deskripsi');
             $table->dateTime('tanggal');
-            $table->foreignIdFor(Relawan::class)->constrained('relawan')->cascadeOnUpdate()->nullable();
+            $table->foreignIdFor(Relawan::class)
+                ->nullable()
+                ->constrained('relawan')
+                ->cascadeOnUpdate();
             $table->string('status_kegiatan')->nullable();
             $table->timestamps(); //
         });

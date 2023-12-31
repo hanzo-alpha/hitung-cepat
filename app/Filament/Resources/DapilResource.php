@@ -16,7 +16,7 @@ class DapilResource extends Resource
 {
     protected static ?string $model = Dapil::class;
 
-    //    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     protected static ?string $slug = 'dapil';
 

@@ -55,7 +55,7 @@ class ManageHitungSuaraPartai extends ManageRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            HitungSuaraPartaiResource\Widgets\SuaraPartaiOverview::class,
+            //            HitungSuaraPartaiResource\Widgets\SuaraPartaiOverview::class,
         ];
     }
 }

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Partai extends Model
@@ -23,6 +24,11 @@ class Partai extends Model
         'warna',
         'logo',
     ];
+
+    public function hitung_suara_partai(): BelongsTo
+    {
+        return $this->belongsTo(HitungSuaraPartai::class);
+    }
 
     public function caleg(): BelongsToMany
     {

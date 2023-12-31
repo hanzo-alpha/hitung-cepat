@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HitungSuaraPartai extends Model
 {
@@ -30,9 +31,14 @@ class HitungSuaraPartai extends Model
         'status_hitung' => 'boolean',
     ];
 
-    public function partai(): BelongsTo
+    //    public function partai(): BelongsTo
+    //    {
+    //        return $this->belongsTo(Partai::class);
+    //    }
+
+    public function partai(): HasMany
     {
-        return $this->belongsTo(Partai::class);
+        return $this->hasMany(SuaraPartai::class);
     }
 
     public function jenisPemilihan(): BelongsTo

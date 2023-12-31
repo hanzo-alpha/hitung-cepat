@@ -16,7 +16,7 @@ class PartaiResource extends Resource
 {
     protected static ?string $model = Partai::class;
 
-    //    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?string $slug = 'partai';
 

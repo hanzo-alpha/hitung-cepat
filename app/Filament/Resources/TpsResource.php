@@ -154,21 +154,6 @@ class TpsResource extends Resource
                     ->toggleable()
                     ->searchable()
                     ->sortable(),
-                //                Tables\Columns\TextColumn::make('prov.name')
-                //                    ->label('Provinsi')
-                //                    ->toggleable()
-                //                    ->searchable()
-                //                    ->sortable(),
-                //                Tables\Columns\TextColumn::make('kab.name')
-                //                    ->label('Kabupaten')
-                //                    ->toggleable()
-                //                    ->searchable()
-                //                    ->sortable(),
-                //                Tables\Columns\TextColumn::make('kec.name')
-                //                    ->label('Kecamatan')
-                //                    ->toggleable()
-                //                    ->searchable()
-                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('data_tps.nama_tps')
                     ->label('Nama TPS')
                     ->badge()
@@ -179,17 +164,23 @@ class TpsResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make()
                         ->action(function ($record) {
-                            $record->data_tps()->delete();
-                            $record->delete();
-
-                            Notification::make()
-                                ->title('Data TPS berhasil dihapus')
-                                ->sendToDatabase(auth()->user());
-                        })
-                        ->successNotificationTitle('Data TPS berhasil dihapus'),
+                            if ($record->delete() && $record->data_tps()->delete()) {
+                                Notification::make()
+                                    ->title($record->jumlah_tps . ' Data TPS berhasil dihapus')
+                                    ->success()
+                                    ->send()
+                                    ->sendToDatabase(auth()->user());
+                            } else {
+                                Notification::make()
+                                    ->title($record->jumlah_tps . ' Data TPS gagal dihapus')
+                                    ->danger()
+                                    ->send()
+                                    ->sendToDatabase(auth()->user());
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([
