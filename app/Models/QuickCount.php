@@ -22,13 +22,13 @@ class QuickCount extends Model
 
     protected $guarded = [];
 
-//    protected $fillable = [
-//        'tps_id',
-//        'caleg_id',
-//        'jumlah_suara',
-//        'persentase',
-//        'status_suara',
-//    ];
+    //    protected $fillable = [
+    //        'tps_id',
+    //        'caleg_id',
+    //        'jumlah_suara',
+    //        'persentase',
+    //        'status_suara',
+    //    ];
 
     protected $casts = [
         'persentase' => 'float',

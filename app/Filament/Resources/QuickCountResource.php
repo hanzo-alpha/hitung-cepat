@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class QuickCountResource extends Resource
 {
@@ -34,7 +33,7 @@ class QuickCountResource extends Resource
                     ->label('TPS')
                     ->relationship('data_tps', 'nama_tps')
                     ->getOptionLabelFromRecordUsing(function ($record) {
-                        return '<strong>' . $record->nama_tps . '</strong> - ' . $record?->tps->kel->name .'<br>' .
+                        return '<strong>' . $record->nama_tps . '</strong> - ' . $record?->tps->kel->name . '<br>' .
                             $record?->tps->kec->name;
                     })->allowHtml()
                     ->searchable()

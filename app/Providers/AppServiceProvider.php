@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         Model::unguard();
         Model::preventSilentlyDiscardingAttributes($this->app->isLocal());
-//        Model::preventLazyLoading($this->app->isLocal());
+        //        Model::preventLazyLoading($this->app->isLocal());
 
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
